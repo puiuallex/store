@@ -43,7 +43,7 @@ function ToastContainer({ toasts, removeToast }) {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed top-20 right-6 z-50 flex flex-col gap-3 pointer-events-none">
+    <div className="fixed top-20 inset-x-0 mx-auto sm:inset-x-auto sm:right-6 sm:left-auto z-50 flex flex-col gap-3 pointer-events-none items-center sm:items-end px-4 sm:px-0 max-w-sm sm:max-w-none">
       {toasts.map((toast) => (
         <Toast key={toast.id} toast={toast} onRemove={removeToast} />
       ))}
