@@ -117,14 +117,29 @@ export default function SiteHeader() {
             <span className="hidden sm:inline">Coș</span>
           </Link>
         </div>
-        <button
-          type="button"
-          className="inline-flex items-center rounded-full bg-white/10 p-2 text-white lg:hidden"
-          onClick={() => setOpen((prev) => !prev)}
-          aria-label="Deschide meniul"
-        >
-          <Bars3Icon className="h-6 w-6" />
-        </button>
+        {/* Iconița de coș și butonul hamburger pe mobil */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <Link
+            href="/cos"
+            className="relative inline-flex items-center justify-center rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+            aria-label="Coș de cumpărături"
+          >
+            <ShoppingCartIcon className="h-6 w-6" />
+            {itemCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">
+                {itemCount > 99 ? "99+" : itemCount}
+              </span>
+            )}
+          </Link>
+          <button
+            type="button"
+            className="inline-flex items-center rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+            onClick={() => setOpen((prev) => !prev)}
+            aria-label="Deschide meniul"
+          >
+            <Bars3Icon className="h-6 w-6" />
+          </button>
+        </div>
       </div>
       {open && (
         <div className="border-t border-zinc-800 bg-zinc-900/95 px-6 py-4 lg:hidden">
@@ -134,19 +149,6 @@ export default function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/cos"
-              className="relative inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-4 py-2 font-semibold text-white"
-              onClick={() => setOpen(false)}
-            >
-              <ShoppingCartIcon className="h-5 w-5" />
-              <span>Coș</span>
-              {itemCount > 0 && (
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-emerald-600">
-                  {itemCount > 99 ? "99+" : itemCount}
-                </span>
-              )}
-            </Link>
             {!authLoading && (
               <>
                 {user ? (
