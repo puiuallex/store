@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Creating Layers — magazin online construit cu Next.js & Supabase
 
-## Getting Started
+Funcționalități principale:
 
-First, run the development server:
+- Pagini dedicate: acasă (catalog integrat), pagină produs, coș, autentificare, înregistrare, contact, despre, termeni, confidențialitate
+- Context global pentru coș și butoane „Adaugă în coș”
+- Header sticky cu navigație modernă și badge pentru coș
+- Formulare de login/register pregătite pentru integrarea Supabase Auth
+- Toate textele în limba română, fără referințe la tehnologia de fabricație
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Integrare Supabase (opțional)
+
+Când ești gata să conectezi backend-ul, adaugă într-un `.env.local`:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Aceste variabile vor fi folosite pentru autentificare și viitoarele servicii de gestiune a comenzilor.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Scripturi utile
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` – pornește aplicația pe `http://localhost:3000`
+- `npm run lint` – rulează ESLint
+- `npm run build` / `npm run start` – pregătește deploy-ul
 
-## Learn More
+### Următorii pași
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Conectează formularul de autentificare/înregistrare la Supabase Auth
+- Adaugă procesator de plăți cu cardul (Stripe/EuPlătesc)
+- Creează un panou intern pentru administrarea produselor și comenzilor
