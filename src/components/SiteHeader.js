@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, UserCircleIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, UserCircleIcon, ChevronDownIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
@@ -105,9 +105,16 @@ export default function SiteHeader() {
           )}
           <Link
             href="/cos"
-            className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-400"
+            className="relative inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-400"
+            aria-label="Coș de cumpărături"
           >
-            Coș ({itemCount})
+            <ShoppingCartIcon className="h-5 w-5" />
+            {itemCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-emerald-600">
+                {itemCount > 99 ? "99+" : itemCount}
+              </span>
+            )}
+            <span className="hidden sm:inline">Coș</span>
           </Link>
         </div>
         <button
@@ -129,10 +136,16 @@ export default function SiteHeader() {
             ))}
             <Link
               href="/cos"
-              className="rounded-full bg-emerald-500 px-4 py-2 text-center font-semibold text-white"
+              className="relative inline-flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-4 py-2 font-semibold text-white"
               onClick={() => setOpen(false)}
             >
-              Coș ({itemCount})
+              <ShoppingCartIcon className="h-5 w-5" />
+              <span>Coș</span>
+              {itemCount > 0 && (
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-emerald-600">
+                  {itemCount > 99 ? "99+" : itemCount}
+                </span>
+              )}
             </Link>
             {!authLoading && (
               <>
