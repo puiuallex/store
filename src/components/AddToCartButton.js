@@ -1,13 +1,23 @@
 "use client";
 
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
+import CustomizedProductModal from "@/components/CustomizedProductModal";
 
 export default function AddToCartButton({ produs, size = "md" }) {
   const { addItem } = useCart();
   const { showToast } = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick = () => {
+    // Dacă produsul este personalizat, deschide modalul
+    if (produs.personalizat) {
+      setIsModalOpen(true);
+      return;
+    }
+
+    // Altfel, adaugă în coș normal
     addItem(produs, 1);
     showToast(`${produs.nume} a fost adăugat în coș`);
   };
@@ -22,13 +32,20 @@ export default function AddToCartButton({ produs, size = "md" }) {
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className={`${baseClasses} ${sizes[size]} bg-emerald-600 hover:bg-emerald-500`}
-    >
-      Adaugă în coș
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={handleClick}
+        className={`${baseClasses} ${sizes[size]} bg-emerald-600 hover:bg-emerald-500`}
+      >
+        {produs.personalizat ? "Comandă" : "Adaugă în coș"}
+      </button>
+      <CustomizedProductModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        productName={produs.nume}
+      />
+    </>
   );
 }
 

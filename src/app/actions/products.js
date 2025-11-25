@@ -36,6 +36,7 @@ export async function getAllProducts() {
         imagine: imagini[0] || null, // Prima imagine pentru compatibilitate
         noutate: product.noutate || false,
         stoc: product.stoc !== undefined ? product.stoc : true,
+        personalizat: product.personalizat || false,
       };
     });
 
@@ -83,6 +84,7 @@ export async function getProductById(productId) {
       imagine: imagini[0] || null, // Prima imagine pentru compatibilitate
       noutate: data.noutate || false,
       stoc: data.stoc !== undefined ? data.stoc : true,
+      personalizat: data.personalizat || false,
     };
 
     return { data: produs, error: null };
@@ -124,6 +126,7 @@ export async function createProduct(productData, userId = null) {
         imagine: primaImagine, // Prima imagine pentru compatibilitate
         noutate: productData.noutate || false,
         stoc: productData.stoc !== undefined ? productData.stoc : true,
+        personalizat: productData.personalizat || false,
       })
       .select()
       .single();
@@ -171,6 +174,7 @@ export async function updateProduct(productId, productData, userId = null) {
         imagine: primaImagine, // Prima imagine pentru compatibilitate
         noutate: productData.noutate || false,
         stoc: productData.stoc !== undefined ? productData.stoc : true,
+        personalizat: productData.personalizat || false,
       })
       .eq("id", productId)
       .select()

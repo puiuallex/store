@@ -13,6 +13,7 @@ export default function ProductCard({ produs }) {
     imagine,
     noutate,
     stoc,
+    personalizat,
     id,
   } = produs;
 
@@ -30,10 +31,15 @@ export default function ProductCard({ produs }) {
             className="object-cover transition duration-300 group-hover:scale-105"
             sizes="(min-width: 1024px) 33vw, 100vw"
           />
-          <div className="absolute inset-x-4 top-4 flex gap-2 text-xs font-medium z-10">
+          <div className="absolute inset-x-4 top-4 flex gap-2 text-xs font-medium z-10 flex-wrap">
             {noutate && (
               <span className="rounded-full bg-white/90 px-3 py-1 text-zinc-800 shadow-sm">
                 Nou
+              </span>
+            )}
+            {personalizat && (
+              <span className="rounded-full bg-purple-500/90 px-3 py-1 text-white shadow-sm">
+                Personalizat
               </span>
             )}
             {!stoc && (

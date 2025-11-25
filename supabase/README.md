@@ -46,3 +46,4 @@ Tabelul are Row Level Security (RLS) activat:
 - Utilizatorii pot actualiza doar comenzile lor
 
 
+

@@ -29,6 +29,7 @@ export default function NewProductPage() {
     imagini: [],
     noutate: false,
     stoc: true,
+    personalizat: false,
   });
 
   useEffect(() => {
@@ -261,7 +262,7 @@ export default function NewProductPage() {
           )}
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex gap-6 flex-wrap">
           <label className="flex items-center gap-3">
             <input
               type="checkbox"
@@ -282,6 +283,17 @@ export default function NewProductPage() {
               className="h-4 w-4 rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500"
             />
             <span className="text-sm font-medium text-zinc-700">În stoc</span>
+          </label>
+
+          <label className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              name="personalizat"
+              checked={formData.personalizat}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500"
+            />
+            <span className="text-sm font-medium text-zinc-700">Produs personalizat</span>
           </label>
         </div>
 

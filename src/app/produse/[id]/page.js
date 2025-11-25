@@ -37,9 +37,21 @@ export default async function ProductPage({ params }) {
       <ProductImageGallery imagini={produs.imagini} nume={produs.nume} />
       <div className="space-y-6">
         <div className="space-y-3">
-          <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">{produs.categorie}</p>
+          <div className="flex items-center gap-3 flex-wrap">
+            <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">{produs.categorie}</p>
+            {produs.personalizat && (
+              <span className="rounded-full bg-purple-500/90 px-3 py-1 text-xs font-medium text-white shadow-sm">
+                Personalizat
+              </span>
+            )}
+          </div>
           <h1 className="text-4xl font-semibold text-zinc-900">{produs.nume}</h1>
           <p className="text-zinc-600">{produs.descriere}</p>
+          {produs.personalizat && (
+            <p className="text-sm text-purple-700 bg-purple-50 border border-purple-200 rounded-2xl px-4 py-3">
+              Acest produs poate fi personalizat conform preferințelor tale. Click pe butonul de comandă pentru a discuta detaliile.
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-4">
           {produs.pret_oferta ? (
@@ -55,7 +67,7 @@ export default async function ProductPage({ params }) {
               <span className="text-sm font-semibold text-emerald-600">În ofertă</span>
             </div>
           ) : (
-            <span className="text-4xl font-semibold text-zinc-900">{produs.pret} lei</span>
+          <span className="text-4xl font-semibold text-zinc-900">{produs.pret} lei</span>
           )}
         </div>
         <div className="flex flex-wrap gap-4 text-sm text-zinc-700">

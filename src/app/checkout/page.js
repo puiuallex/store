@@ -75,7 +75,7 @@ export default function CheckoutPage() {
         
         // Folosim window.location.href pentru un redirect sigur
         window.location.href = `/comenzi/success/${orderId}`;
-      } else {
+        } else {
         console.error("Order creation result:", result);
         setError("Comanda a fost creată, dar nu am putut obține ID-ul comenzii. Te rugăm să verifici comenzile tale.");
         setLoading(false);
