@@ -5,6 +5,7 @@ import ProductImageGallery from "@/components/ProductImageGallery";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedProducts from "@/components/RelatedProducts";
 import ProductDescription from "@/components/ProductDescription";
+import ProductShare from "@/components/ProductShare";
 import { getProductById, getAllProducts } from "@/app/actions/products";
 
 // Revalidate la fiecare 5 minute pentru paginile de produse
@@ -113,6 +114,11 @@ export default async function ProductPage({ params }) {
         <div className="w-full lg:w-auto">
           <ProductColorSelector produs={produs} />
         </div>
+        <ProductShare 
+          productName={produs.nume}
+          productUrl={`/produse/${produs.id}`}
+          productImage={produs.imagine}
+        />
         <p className="text-[10px] lg:text-xs text-zinc-500 leading-relaxed">
           Plata se face la livrare. Confirmăm telefonic înainte să expediem coletul.
         </p>
