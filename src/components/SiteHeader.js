@@ -9,8 +9,8 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
 const links = [
-  { href: "/", label: "Acasă" },
-  { href: "/despre", label: "Despre" },
+  { href: "/", label: "Produse" },
+  { href: "/livrare", label: "Livrare și returnări" },
   { href: "/contact", label: "Contact" },
 ];
 

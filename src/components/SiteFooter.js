@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const footerLinks = [
-  { title: "Companie", items: [{ label: "Despre", href: "/despre" }, { label: "Contact", href: "/contact" }] },
+  { title: "Informații", items: [{ label: "Livrare și returnări", href: "/livrare" }, { label: "Contact", href: "/contact" }] },
   { title: "Contul tău", items: [{ label: "Autentificare / Înregistrare", href: "/autentificare" }] },
   { title: "Legal", items: [{ label: "Termeni", href: "/termeni" }, { label: "Confidențialitate", href: "/confidentialitate" }] },
 ];

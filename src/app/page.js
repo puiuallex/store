@@ -1,10 +1,12 @@
-import ProductCard from "@/components/ProductCard";
 import { getAllProducts } from "@/app/actions/products";
+import { getAllCategories } from "@/app/actions/categories";
+import ProductCategoryTabs from "@/components/ProductCategoryTabs";
 
 export default async function Home() {
-  const { data: produse, error } = await getAllProducts();
+  const { data: produse, error: productsError } = await getAllProducts();
+  const { data: categorii, error: categoriesError } = await getAllCategories();
 
-  if (error || !produse) {
+  if (productsError || !produse) {
     return (
       <div className="space-y-10">
         <header className="space-y-3">
@@ -12,7 +14,7 @@ export default async function Home() {
           <h1 className="text-4xl font-semibold text-zinc-900">Produsele noastre</h1>
         </header>
         <div className="rounded-3xl border border-rose-200 bg-rose-50 p-8 text-center">
-          <p className="text-rose-800">{error || "Nu s-au putut încărca produsele."}</p>
+          <p className="text-rose-800">{productsError || "Nu s-au putut încărca produsele."}</p>
         </div>
       </div>
     );
@@ -23,10 +25,6 @@ export default async function Home() {
       <header className="space-y-3">
         <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Catalog</p>
         <h1 className="text-4xl font-semibold text-zinc-900">Produsele noastre</h1>
-        <p className="text-zinc-600">
-          Selectează un produs pentru detalii și
-          adaugă-l în coș.
-        </p>
       </header>
       {produse.length === 0 ? (
         <div className="rounded-3xl border border-zinc-200 bg-white/80 p-12 text-center">
@@ -36,11 +34,10 @@ export default async function Home() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4 lg:gap-8 lg:grid-cols-3">
-          {produse.map((produs) => (
-            <ProductCard key={produs.id} produs={produs} />
-          ))}
-        </div>
+        <ProductCategoryTabs 
+          produse={produse} 
+          categorii={categorii || []} 
+        />
       )}
     </div>
   );
