@@ -11,7 +11,7 @@ export default function SiteFooter() {
     <footer className="border-t border-zinc-200 bg-white/80">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-10 lg:flex-row lg:justify-between lg:px-8">
         <div className="space-y-3">
-          <p className="text-lg font-semibold text-zinc-900">Creating Layers</p>
+          <p className="text-lg font-semibold text-zinc-900 font-[family-name:var(--font-orbitron)] tracking-tight">creatinglayers.ro</p>
           <p className="text-sm text-zinc-500">
             Magazin online cu produse românești - livrare rapidă și plată ramburs.
           </p>
@@ -34,7 +34,7 @@ export default function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-zinc-100 py-4 text-center text-xs text-zinc-400">
-        © {new Date().getFullYear()} Creating Layers — toate drepturile rezervate.
+        © {new Date().getFullYear()} creatinglayers.ro — toate drepturile rezervate.
       </div>
     </footer>
   );

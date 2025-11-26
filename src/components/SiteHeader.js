@@ -30,8 +30,8 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-20 border-b border-white/10 bg-zinc-950/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link href="/" className="text-lg font-semibold text-white">
-          Creating Layers
+        <Link href="/" className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight">
+          creatinglayers.ro
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-zinc-200 lg:flex">
           {links.map((link) => (
