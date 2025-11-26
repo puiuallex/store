@@ -19,9 +19,36 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Creating Layers | Produse românești",
-  description:
-    "Magazin online românesc cu produse de calitate - livrare rapidă și plată ramburs.",
+  title: {
+    default: "Creating Layers | Produse românești",
+    template: "%s | Creating Layers",
+  },
+  description: "Magazin online românesc cu produse de calitate - livrare rapidă și plată ramburs. Produse personalizate disponibile.",
+  keywords: [
+    "produse românești",
+    "magazin online",
+    "livrare gratuită",
+    "plata ramburs",
+    "produse personalizate",
+    "produse printate 3d",
+    "suporturi bahare masini",
+    "accesorii auto",
+    "Creating Layers"
+  ],
+  authors: [{ name: "Creating Layers" }],
+  openGraph: {
+    type: "website",
+    locale: "ro_RO",
+    url: "https://creatinglayers.ro",
+    siteName: "Creating Layers",
+    title: "Creating Layers | Produse românești",
+    description: "Magazin online românesc cu produse de calitate - livrare rapidă și plată ramburs.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Creating Layers",
+    description: "Magazin online românesc cu produse de calitate",
+  },
 };
 
 export default function RootLayout({ children }) {

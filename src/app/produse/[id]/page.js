@@ -25,9 +25,30 @@ export async function generateMetadata({ params }) {
   if (!produs) {
     return { title: "Produs indisponibil | Creating Layers" };
   }
+  
+  const imageUrl = produs.imagini?.[0] || produs.imagine;
+  const fullImageUrl = imageUrl && imageUrl.startsWith('http') 
+    ? imageUrl 
+    : imageUrl 
+      ? `https://creatinglayers.ro${imageUrl}`
+      : 'https://creatinglayers.ro/og-image.jpg';
+  
   return {
     title: `${produs.nume} | Creating Layers`,
     description: produs.descriere,
+    openGraph: {
+      title: `${produs.nume} | Creating Layers`,
+      description: produs.descriere,
+      images: [fullImageUrl],
+      type: "website",
+      url: `https://creatinglayers.ro/produse/${id}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${produs.nume} | Creating Layers`,
+      description: produs.descriere,
+      images: [fullImageUrl],
+    },
   };
 }
 
@@ -63,10 +84,45 @@ export default async function ProductPage({ params }) {
     { label: produs.nume },
   ];
 
+  // Structured Data (Schema.org) pentru produs
+  const structuredData = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": produs.nume,
+    "description": produs.descriere,
+    "image": produs.imagini && produs.imagini.length > 0 
+      ? produs.imagini.map(img => img.startsWith('http') ? img : `https://creatinglayers.ro${img}`)
+      : (produs.imagine ? [produs.imagine.startsWith('http') ? produs.imagine : `https://creatinglayers.ro${produs.imagine}`] : []),
+    "offers": {
+      "@type": "Offer",
+      "url": `https://creatinglayers.ro/produse/${produs.id}`,
+      "priceCurrency": "RON",
+      "price": produs.pret_oferta || produs.pret,
+      "availability": produs.stoc 
+        ? "https://schema.org/InStock" 
+        : "https://schema.org/PreOrder",
+      "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      "itemCondition": "https://schema.org/NewCondition"
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "Creating Layers"
+    },
+    "category": produs.categorii && produs.categorii.length > 0 
+      ? produs.categorii[0] 
+      : (produs.categorie || ""),
+    "sku": produs.id
+  };
+
   return (
-    <div className="space-y-8">
-      <Breadcrumbs items={breadcrumbs} />
-      <div className="grid gap-6 lg:gap-12 lg:grid-cols-2">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <div className="space-y-8">
+        <Breadcrumbs items={breadcrumbs} />
+        <div className="grid gap-6 lg:gap-12 lg:grid-cols-2">
       <ProductImageGallery imagini={produs.imagini} nume={produs.nume} />
       <div className="space-y-4 lg:space-y-6">
         <div className="space-y-2 lg:space-y-3">
@@ -135,7 +191,8 @@ export default async function ProductPage({ params }) {
           currentProductId={produs.id}
         />
       )}
-    </div>
+      </div>
+    </>
   );
 }
 
