@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { EnvelopeIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { subscribeToNewsletter } from "@/app/actions/newsletter";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
@@ -21,14 +22,16 @@ export default function Newsletter() {
     }
 
     try {
-      // Aici poți adăuga logica pentru salvarea email-ului
-      // De exemplu, un API call sau server action
-      // Pentru moment, simulăm un delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const result = await subscribeToNewsletter(email);
       
-      setStatus("success");
-      setMessage("Mulțumim! Te-ai abonat cu succes.");
-      setEmail("");
+      if (result.error) {
+        setStatus("error");
+        setMessage(result.error);
+      } else {
+        setStatus("success");
+        setMessage("Mulțumim! Te-ai abonat cu succes.");
+        setEmail("");
+      }
     } catch (error) {
       setStatus("error");
       setMessage("A apărut o eroare. Te rugăm să încerci din nou.");
