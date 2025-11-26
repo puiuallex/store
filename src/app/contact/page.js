@@ -5,7 +5,7 @@ export const metadata = {
 const contactDetails = [
   { label: "Telefon", value: "+40 786 089 834" },
   { label: "Program", value: "Luni - Vineri, 10:00 - 18:00" },
-  { label: "Adresă", value: "Str. Atelierului 12, București" },
+  { label: "Adresă", value: "Iași" },
 ];
 
 export default function ContactPage() {
