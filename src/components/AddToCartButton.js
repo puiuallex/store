@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import CustomizedProductModal from "@/components/CustomizedProductModal";
@@ -8,6 +9,7 @@ import CustomizedProductModal from "@/components/CustomizedProductModal";
 export default function AddToCartButton({ produs, size = "md" }) {
   const { addItem } = useCart();
   const { showToast } = useToast();
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick = () => {
@@ -19,11 +21,26 @@ export default function AddToCartButton({ produs, size = "md" }) {
 
     // Altfel, adaugă în coș normal
     addItem(produs, 1);
-    showToast(`${produs.nume} a fost adăugat în coș`);
+    showToast(
+      `${produs.nume} a fost adăugat în coș`,
+      "success",
+      [
+        {
+          label: "Vezi coș",
+          onClick: () => router.push("/cos"),
+          primary: false,
+        },
+        {
+          label: "Finalizează",
+          onClick: () => router.push("/checkout"),
+          primary: true,
+        },
+      ]
+    );
   };
 
   const baseClasses =
-    "inline-flex items-center justify-center rounded-full font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500";
+    "inline-flex items-center justify-center rounded-full font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 w-full lg:w-auto";
 
   const sizes = {
     sm: "px-4 py-2 text-sm",

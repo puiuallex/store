@@ -14,6 +14,10 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Calcul cost livrare: 20 lei dacă subtotal <= 100, altfel gratuit
+  const shippingCost = subtotal <= 100 ? 20 : 0;
+  const total = subtotal + shippingCost;
+
   const [formData, setFormData] = useState({
     fullName: user?.user_metadata?.full_name || "",
     phone: "",
@@ -50,6 +54,8 @@ export default function CheckoutPage() {
           price: item.price,
         })),
         subtotal,
+        shipping_cost: shippingCost,
+        total,
         shipping_address: {
           fullName: formData.fullName,
           phone: formData.phone,
@@ -225,13 +231,24 @@ export default function CheckoutPage() {
           </div>
           <div className="flex items-center justify-between">
             <span>Livrare</span>
-            <span>Calcul la confirmare</span>
+            <span>
+              {shippingCost === 0 ? (
+                <span className="text-emerald-600 font-semibold">Gratuit</span>
+              ) : (
+                `${shippingCost.toFixed(2)} lei`
+              )}
+            </span>
           </div>
+          {subtotal < 100 && (
+            <div className="text-xs text-emerald-600">
+              Mai adaugă produse în valoare de {((100 - subtotal).toFixed(2))} lei și primești livrare gratuită
+            </div>
+          )}
         </div>
         <div className="mt-6 border-t border-zinc-100 pt-4">
           <div className="flex items-center justify-between text-base font-semibold text-zinc-900">
-            <span>Total estimativ</span>
-            <span>{subtotal.toFixed(2)} lei</span>
+            <span>Total</span>
+            <span>{total.toFixed(2)} lei</span>
           </div>
         </div>
         <p className="mt-4 text-xs text-zinc-500">

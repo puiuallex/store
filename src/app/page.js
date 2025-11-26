@@ -36,7 +36,7 @@ export default async function Home() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 lg:gap-8 lg:grid-cols-3">
           {produse.map((produs) => (
             <ProductCard key={produs.id} produs={produs} />
           ))}

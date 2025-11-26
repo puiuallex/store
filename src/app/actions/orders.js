@@ -12,6 +12,14 @@ export async function createOrder(orderData, userId = null) {
 
     // userId este opțional - null pentru guest orders, sau ID-ul utilizatorului pentru comenzi autentificate
 
+    // Calculează costul de livrare: 20 lei dacă subtotal <= 100, altfel gratuit
+    const shippingCost = orderData.shipping_cost !== undefined 
+      ? orderData.shipping_cost 
+      : (orderData.subtotal <= 100 ? 20 : 0);
+    const total = orderData.total !== undefined 
+      ? orderData.total 
+      : (orderData.subtotal + shippingCost);
+
     // Creează comanda în baza de date
     const { data, error } = await supabase
       .from("orders")
@@ -19,7 +27,7 @@ export async function createOrder(orderData, userId = null) {
         user_id: userId, // null pentru guest orders
         items: orderData.items,
         subtotal: orderData.subtotal,
-        total: orderData.subtotal, // Va fi actualizat când se calculează livrarea
+        total: total,
         shipping_address: orderData.shipping_address,
         notes: orderData.notes || null,
         status: "nouă",

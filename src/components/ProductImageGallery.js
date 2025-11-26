@@ -8,8 +8,8 @@ export default function ProductImageGallery({ imagini, nume }) {
 
   if (!imagini || imagini.length === 0) {
     return (
-      <div className="relative h-[480px] overflow-hidden rounded-3xl bg-zinc-100">
-        <div className="flex h-full items-center justify-center text-zinc-400">
+      <div className="relative h-[300px] lg:h-[480px] overflow-hidden rounded-2xl lg:rounded-3xl bg-zinc-100">
+        <div className="flex h-full items-center justify-center text-zinc-400 text-sm lg:text-base">
           Fără imagine
         </div>
       </div>
@@ -19,9 +19,9 @@ export default function ProductImageGallery({ imagini, nume }) {
   const selectedImage = imagini[selectedIndex];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 lg:space-y-4">
       {/* Imagine principală */}
-      <div className="relative h-[480px] overflow-hidden rounded-3xl bg-zinc-100">
+      <div className="relative h-[300px] lg:h-[480px] overflow-hidden rounded-2xl lg:rounded-3xl bg-zinc-100">
         <Image
           src={selectedImage}
           alt={`${nume} - Imagine ${selectedIndex + 1}`}
@@ -34,13 +34,13 @@ export default function ProductImageGallery({ imagini, nume }) {
 
       {/* Thumbnails */}
       {imagini.length > 1 && (
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-4 gap-2 lg:gap-3">
           {imagini.map((imagine, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setSelectedIndex(index)}
-              className={`relative h-24 overflow-hidden rounded-2xl border-2 transition ${
+              className={`relative h-16 lg:h-24 overflow-hidden rounded-xl lg:rounded-2xl border-2 transition ${
                 selectedIndex === index
                   ? "border-emerald-500 ring-2 ring-emerald-200"
                   : "border-zinc-200 hover:border-zinc-300"
@@ -60,6 +60,7 @@ export default function ProductImageGallery({ imagini, nume }) {
     </div>
   );
 }
+
 
 
 

@@ -210,17 +210,21 @@ export default function OrderDetailsPage({ params }) {
               <div className="flex items-center justify-between text-zinc-600">
                 <span>Livrare:</span>
                 <span>
-                  {order.total > order.subtotal
-                    ? `${(order.total - order.subtotal).toFixed(2)} lei`
-                    : "Calcul la confirmare"}
+                  {order.total > order.subtotal ? (
+                    (order.total - order.subtotal) === 0 ? (
+                      <span className="text-emerald-600 font-semibold">Gratuit</span>
+                    ) : (
+                      `${(order.total - order.subtotal).toFixed(2)} lei`
+                    )
+                  ) : (
+                    "Gratuit"
+                  )}
                 </span>
               </div>
               <div className="border-t border-zinc-100 pt-3">
                 <div className="flex items-center justify-between text-base font-semibold text-zinc-900">
                   <span>Total:</span>
-                  <span>
-                    {order.total ? `${order.total.toFixed(2)} lei` : "Calcul la confirmare"}
-                  </span>
+                  <span>{order.total ? `${order.total.toFixed(2)} lei` : `${order.subtotal.toFixed(2)} lei`}</span>
                 </div>
               </div>
             </div>
@@ -243,6 +247,7 @@ export default function OrderDetailsPage({ params }) {
     </div>
   );
 }
+
 
 
 

@@ -47,3 +47,4 @@ Tabelul are Row Level Security (RLS) activat:
 
 
 
+
