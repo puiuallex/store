@@ -6,6 +6,9 @@ import WhyBuyFromUs from "@/components/WhyBuyFromUs";
 import NewProducts from "@/components/NewProducts";
 import Newsletter from "@/components/Newsletter";
 
+// Revalidate la fiecare 60 de secunde pentru pagina home
+export const revalidate = 60;
+
 export default async function Home() {
   const { data: produse, error: productsError } = await getAllProducts();
   const { data: categorii, error: categoriesError } = await getAllCategories();

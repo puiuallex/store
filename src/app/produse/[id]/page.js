@@ -7,6 +7,9 @@ import RelatedProducts from "@/components/RelatedProducts";
 import ProductDescription from "@/components/ProductDescription";
 import { getProductById, getAllProducts } from "@/app/actions/products";
 
+// Revalidate la fiecare 5 minute pentru paginile de produse
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   const { data: produse } = await getAllProducts();
   if (!produse) {

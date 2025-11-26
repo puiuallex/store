@@ -35,6 +35,7 @@ export default function ProductCard({ produs, noShadow = false }) {
             fill
             className="object-cover transition duration-300 group-hover:scale-105"
             sizes="(min-width: 1024px) 33vw, 50vw"
+            loading="lazy"
           />
           <div className="absolute inset-x-2 top-2 lg:inset-x-4 lg:top-4 flex gap-1.5 lg:gap-2 text-[10px] lg:text-xs font-medium z-10 flex-wrap">
             {inOferta && (

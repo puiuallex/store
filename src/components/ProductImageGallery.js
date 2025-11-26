@@ -66,6 +66,7 @@ export default function ProductImageGallery({ imagini, nume }) {
                 fill
                 className="object-cover"
                 sizes="(min-width: 1024px) 12.5vw, 25vw"
+                loading={index < 4 ? "eager" : "lazy"}
               />
             </button>
           ))}
