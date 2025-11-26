@@ -10,7 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const links = [
   { href: "/", label: "Produse" },
-  { href: "/livrare", label: "Livrare și returnări" },
+  { href: "/livrare", label: "Livrare și retururi" },
   { href: "/contact", label: "Contact" },
 ];
 

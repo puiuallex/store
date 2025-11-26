@@ -15,7 +15,7 @@ export default function ShippingBanner() {
             d="M5 13l4 4L19 7"
           />
         </svg>
-        <span>Livrare gratuită la comenzi peste 100 lei</span>
+        <span>Livrare gratuită la comenzi de peste 100 lei</span>
       </div>
     </div>
   );

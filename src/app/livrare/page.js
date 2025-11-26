@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Livrare și returnări | Creating Layers",
-  description: "Informații despre livrare și returnări pentru produsele Creating Layers",
+  title: "Livrare și retururi | Creating Layers",
+  description: "Informații despre livrare și retururi pentru produsele Creating Layers",
 };
 
 export default function LivrarePage() {
@@ -10,7 +10,7 @@ export default function LivrarePage() {
     <div className="mx-auto max-w-4xl space-y-8">
       <header className="space-y-3">
         <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Informații</p>
-        <h1 className="text-4xl font-semibold text-zinc-900">Livrare și returnări</h1>
+        <h1 className="text-4xl font-semibold text-zinc-900">Livrare și retururi</h1>
       </header>
 
       <div className="space-y-8">
@@ -41,9 +41,9 @@ export default function LivrarePage() {
           </div>
         </section>
 
-        {/* Secțiunea Returnări */}
+        {/* Secțiunea Retururi */}
         <section className="rounded-3xl border border-zinc-200 bg-white/80 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-          <h2 className="mb-6 text-2xl font-semibold text-zinc-900">Returnări</h2>
+          <h2 className="mb-6 text-2xl font-semibold text-zinc-900">Retururi</h2>
           <div className="space-y-4 text-zinc-700">
             <div className="rounded-2xl bg-amber-50 border border-amber-200 p-6">
               <p className="font-semibold text-amber-900 mb-2">Produse personalizate</p>
@@ -65,7 +65,7 @@ export default function LivrarePage() {
         {/* Link către contact */}
         <div className="rounded-2xl bg-zinc-50 border border-zinc-200 p-6 text-center">
           <p className="text-zinc-700 mb-4">
-            Ai întrebări despre livrare sau returnări?
+            Ai întrebări despre livrare sau retururi?
           </p>
           <Link
             href="/contact"

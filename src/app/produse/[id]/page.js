@@ -176,7 +176,7 @@ export default async function ProductPage({ params }) {
           productImage={produs.imagine}
         />
         <p className="text-[10px] lg:text-xs text-zinc-500 leading-relaxed">
-          Plata se face la livrare. Confirmăm telefonic înainte să expediem coletul.
+          Plata se face la livrare. Confirmăm telefonic sau prin mesaj înainte să expediem coletul.
         </p>
         <Link href="/" className="text-xs lg:text-sm font-semibold text-emerald-600 hover:text-emerald-500 inline-block">
           ← Înapoi la catalog
