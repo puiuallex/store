@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createProduct } from "@/app/actions/products";
 import { checkAdminAccess } from "@/app/actions/admin";
+import { getAllCategories } from "@/app/actions/categories";
 import MultiImageUpload from "@/components/MultiImageUpload";
-
-const CATEGORII = ["Iluminat", "Decor", "Birou", "Utilitar"];
 
 export default function NewProductPage() {
   const { user, loading: authLoading } = useAuth();
@@ -17,6 +16,7 @@ export default function NewProductPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [checking, setChecking] = useState(true);
   const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   const [formData, setFormData] = useState({
     id: "",
@@ -24,7 +24,7 @@ export default function NewProductPage() {
     descriere: "",
     pret: "",
     pret_oferta: "",
-    categorie: "",
+    categorii: [],
     culori: "",
     imagini: [],
     noutate: false,
@@ -41,6 +41,13 @@ export default function NewProductPage() {
 
         if (!adminCheck.isAdmin) {
           router.push("/");
+          return;
+        }
+
+        // Încarcă categoriile
+        const categoriesResult = await getAllCategories();
+        if (categoriesResult.data) {
+          setCategories(categoriesResult.data);
         }
       } else if (!authLoading && !user) {
         router.push("/autentificare");
@@ -56,8 +63,8 @@ export default function NewProductPage() {
     setError(null);
 
     // Validare
-    if (!formData.id || !formData.nume || !formData.descriere || !formData.pret || formData.imagini.length === 0) {
-      setError("Completează toate câmpurile obligatorii, inclusiv cel puțin o imagine.");
+    if (!formData.id || !formData.nume || !formData.descriere || !formData.pret || formData.imagini.length === 0 || formData.categorii.length === 0) {
+      setError("Completează toate câmpurile obligatorii, inclusiv cel puțin o imagine și o categorie.");
       setLoading(false);
       return;
     }
@@ -218,21 +225,39 @@ export default function NewProductPage() {
 
         <div>
           <label className="flex flex-col text-sm font-medium text-zinc-700">
-            Categorie *
-            <select
-              name="categorie"
-              required
-              value={formData.categorie}
-              onChange={handleChange}
-              className="mt-2 rounded-2xl border border-zinc-200 bg-zinc-50/60 px-4 py-3 text-sm text-zinc-800 outline-none transition focus:border-emerald-500 focus:bg-white"
-            >
-              <option value="">Selectează...</option>
-              {CATEGORII.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
+            Categorii *
+            <div className="mt-2 space-y-2 rounded-2xl border border-zinc-200 bg-zinc-50/60 p-4">
+              {categories.length === 0 ? (
+                <p className="text-sm text-zinc-500">Nu există categorii. <Link href="/admin/categorii" className="text-emerald-600 hover:text-emerald-500">Adaugă categorii</Link></p>
+              ) : (
+                categories.map((cat) => (
+                  <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.categorii.includes(cat.nume)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFormData({
+                            ...formData,
+                            categorii: [...formData.categorii, cat.nume],
+                          });
+                        } else {
+                          setFormData({
+                            ...formData,
+                            categorii: formData.categorii.filter((c) => c !== cat.nume),
+                          });
+                        }
+                      }}
+                      className="h-4 w-4 rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500"
+                    />
+                    <span className="text-sm text-zinc-800">{cat.nume}</span>
+                  </label>
+                ))
+              )}
+            </div>
+            {formData.categorii.length === 0 && (
+              <p className="mt-1 text-xs text-rose-600">Selectează cel puțin o categorie</p>
+            )}
           </label>
         </div>
 

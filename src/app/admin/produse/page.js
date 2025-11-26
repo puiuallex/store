@@ -118,16 +118,16 @@ export default function AdminProductsPage() {
                 products.map((product) => (
                   <tr key={product.id} className="hover:bg-zinc-50">
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-zinc-100">
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-zinc-100 border border-zinc-200">
                           <img
                             src={product.imagine}
                             alt={product.nume}
                             className="h-full w-full object-cover"
                           />
                         </div>
-                        <div>
-                          <p className="font-semibold text-zinc-900">{product.nume}</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold text-zinc-900 truncate">{product.nume}</p>
                           <p className="text-sm text-zinc-500 line-clamp-1">{product.descriere}</p>
                         </div>
                       </div>

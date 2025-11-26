@@ -112,6 +112,34 @@ export default function AdminPage() {
           </p>
         </Link>
 
+        {/* Gestionare categorii */}
+        <Link
+          href="/admin/categorii"
+          className="group rounded-3xl border border-zinc-200 bg-white/80 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)] transition hover:border-emerald-300 hover:shadow-[0_25px_70px_rgba(16,185,129,0.12)]"
+        >
+          <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-600">
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
+            </svg>
+          </div>
+          <h2 className="text-xl font-semibold text-zinc-900 group-hover:text-emerald-600">
+            Gestionare categorii
+          </h2>
+          <p className="mt-2 text-sm text-zinc-600">
+            Adaugă și gestionează categoriile de produse.
+          </p>
+        </Link>
+
         {/* Statistici */}
         <div className="rounded-3xl border border-zinc-200 bg-white/80 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
           <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-600">

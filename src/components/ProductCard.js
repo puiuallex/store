@@ -54,9 +54,6 @@ export default function ProductCard({ produs }) {
               </span>
             )}
           </div>
-          <div className="absolute bottom-2 left-2 lg:bottom-4 lg:left-4 text-[10px] lg:text-sm font-semibold text-zinc-900 bg-white/90 px-2 py-1 lg:px-3 lg:py-1.5 rounded-full shadow-sm z-10">
-            {categorie}
-          </div>
         </div>
         <div className="flex flex-1 flex-col gap-2 lg:gap-4 p-3 lg:p-6">
           <div>

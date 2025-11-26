@@ -38,7 +38,9 @@ export default async function ProductPage({ params }) {
       <div className="space-y-4 lg:space-y-6">
         <div className="space-y-2 lg:space-y-3">
           <div className="flex items-center gap-2 lg:gap-3 flex-wrap">
-            <p className="text-[10px] lg:text-xs uppercase tracking-[0.5em] text-emerald-600">{produs.categorie}</p>
+            {(produs.categorii && produs.categorii.length > 0 ? produs.categorii : [produs.categorie]).map((cat, index) => (
+              <p key={index} className="text-[10px] lg:text-xs uppercase tracking-[0.5em] text-emerald-600">{cat}</p>
+            ))}
             {produs.personalizat && (
               <span className="rounded-full bg-purple-500/90 px-2.5 py-0.5 lg:px-3 lg:py-1 text-[10px] lg:text-xs font-medium text-white shadow-sm">
                 Personalizat
