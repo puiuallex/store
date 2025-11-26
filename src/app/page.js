@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getAllProducts } from "@/app/actions/products";
 import { getAllCategories } from "@/app/actions/categories";
 import ProductCategoryTabs from "@/components/ProductCategoryTabs";
@@ -39,10 +40,16 @@ export default async function Home() {
             </p>
           </div>
         ) : (
-          <ProductCategoryTabs 
-            produse={produse} 
-            categorii={categorii || []} 
-          />
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-12">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-emerald-600 border-r-transparent"></div>
+            </div>
+          }>
+            <ProductCategoryTabs 
+              produse={produse} 
+              categorii={categorii || []} 
+            />
+          </Suspense>
         )}
       </section>
 
