@@ -1,6 +1,9 @@
 import { getAllProducts } from "@/app/actions/products";
 import { getAllCategories } from "@/app/actions/categories";
 import ProductCategoryTabs from "@/components/ProductCategoryTabs";
+import WhyBuyFromUs from "@/components/WhyBuyFromUs";
+import NewProducts from "@/components/NewProducts";
+import Newsletter from "@/components/Newsletter";
 
 export default async function Home() {
   const { data: produse, error: productsError } = await getAllProducts();
@@ -22,23 +25,35 @@ export default async function Home() {
 
   return (
     <div className="space-y-10">
-      <header className="space-y-3">
-        <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Catalog</p>
-        <h1 className="text-4xl font-semibold text-zinc-900">Produsele noastre</h1>
-      </header>
-      {produse.length === 0 ? (
-        <div className="rounded-3xl border border-zinc-200 bg-white/80 p-12 text-center">
-          <p className="text-lg font-semibold text-zinc-900">Nu există produse disponibile</p>
-          <p className="mt-2 text-sm text-zinc-600">
-            Produsele vor apărea aici când vor fi adăugate.
-          </p>
-        </div>
-      ) : (
-        <ProductCategoryTabs 
-          produse={produse} 
-          categorii={categorii || []} 
-        />
-      )}
+      {/* Secțiunea Catalog */}
+      <section>
+        <header className="space-y-3 mb-8 lg:mb-10">
+          <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Catalog</p>
+          <h1 className="text-4xl font-semibold text-zinc-900">Produsele noastre</h1>
+        </header>
+        {produse.length === 0 ? (
+          <div className="rounded-3xl border border-zinc-200 bg-white/80 p-12 text-center">
+            <p className="text-lg font-semibold text-zinc-900">Nu există produse disponibile</p>
+            <p className="mt-2 text-sm text-zinc-600">
+              Produsele vor apărea aici când vor fi adăugate.
+            </p>
+          </div>
+        ) : (
+          <ProductCategoryTabs 
+            produse={produse} 
+            categorii={categorii || []} 
+          />
+        )}
+      </section>
+
+      {/* Secțiunea De ce să cumperi de la noi */}
+      <WhyBuyFromUs />
+
+      {/* Secțiunea Produse noi */}
+      <NewProducts produse={produse} />
+
+      {/* Secțiunea Newsletter */}
+      <Newsletter />
     </div>
   );
 }

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductColorSelector from "@/components/ProductColorSelector";
 import ProductImageGallery from "@/components/ProductImageGallery";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import RelatedProducts from "@/components/RelatedProducts";
 import { getProductById, getAllProducts } from "@/app/actions/products";
 
 export async function generateStaticParams() {
@@ -32,8 +34,34 @@ export default async function ProductPage({ params }) {
     notFound();
   }
 
+  // Obține toate produsele pentru produse similare
+  const { data: allProducts } = await getAllProducts();
+  
+  // Filtrează produsele din aceeași categorie pentru produse similare
+  const relatedProducts = allProducts?.filter((p) => {
+    // Verifică dacă au cel puțin o categorie comună
+    if (produs.categorii && produs.categorii.length > 0 && p.categorii && p.categorii.length > 0) {
+      return p.categorii.some((cat) => produs.categorii.includes(cat));
+    }
+    // Fallback la categoria veche dacă nu există categorii multiple
+    return p.categorie === produs.categorie && p.id !== produs.id;
+  }) || [];
+
+  // Construiește breadcrumbs
+  const breadcrumbs = [
+    { label: "Acasă", href: "/" },
+    ...(produs.categorii && produs.categorii.length > 0
+      ? [{ label: produs.categorii[0], href: `/?categorie=${encodeURIComponent(produs.categorii[0])}` }]
+      : produs.categorie
+      ? [{ label: produs.categorie, href: `/?categorie=${encodeURIComponent(produs.categorie)}` }]
+      : []),
+    { label: produs.nume },
+  ];
+
   return (
-    <div className="grid gap-6 lg:gap-12 lg:grid-cols-2">
+    <div className="space-y-8">
+      <Breadcrumbs items={breadcrumbs} />
+      <div className="grid gap-6 lg:gap-12 lg:grid-cols-2">
       <ProductImageGallery imagini={produs.imagini} nume={produs.nume} />
       <div className="space-y-4 lg:space-y-6">
         <div className="space-y-2 lg:space-y-3">
@@ -88,6 +116,15 @@ export default async function ProductPage({ params }) {
           ← Înapoi la catalog
         </Link>
       </div>
+      </div>
+      
+      {/* Produse similare */}
+      {relatedProducts.length > 0 && (
+        <RelatedProducts 
+          produse={relatedProducts} 
+          currentProductId={produs.id}
+        />
+      )}
     </div>
   );
 }
