@@ -4,6 +4,7 @@ import ProductColorSelector from "@/components/ProductColorSelector";
 import ProductImageGallery from "@/components/ProductImageGallery";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedProducts from "@/components/RelatedProducts";
+import ProductDescription from "@/components/ProductDescription";
 import { getProductById, getAllProducts } from "@/app/actions/products";
 
 export async function generateStaticParams() {
@@ -76,7 +77,7 @@ export default async function ProductPage({ params }) {
             )}
           </div>
           <h1 className="text-2xl lg:text-4xl font-semibold text-zinc-900">{produs.nume}</h1>
-          <p className="text-sm lg:text-base text-zinc-600 leading-relaxed">{produs.descriere}</p>
+          <ProductDescription descriere={produs.descriere} />
           {produs.personalizat && (
             <p className="text-xs lg:text-sm text-purple-700 bg-purple-50 border border-purple-200 rounded-xl lg:rounded-2xl px-3 py-2 lg:px-4 lg:py-3">
               Acest produs poate fi personalizat conform preferințelor tale. Click pe butonul de comandă pentru a discuta detaliile.

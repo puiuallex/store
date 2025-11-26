@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AddToCartButton from "@/components/AddToCartButton";
 
-export default function ProductCard({ produs }) {
+export default function ProductCard({ produs, noShadow = false }) {
   const {
     nume,
     descriere,
@@ -22,7 +22,11 @@ export default function ProductCard({ produs }) {
   const discountPercentage = inOferta ? Math.round(((pret - pret_oferta) / pret) * 100) : 0;
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl lg:rounded-3xl border border-zinc-200 bg-white/80 shadow-sm lg:shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur transition hover:-translate-y-1 hover:shadow-[0_25px_70px_rgba(15,23,42,0.14)]">
+    <article className={`flex flex-col h-full overflow-hidden rounded-2xl lg:rounded-3xl border border-zinc-200 bg-white/80 backdrop-blur transition hover:-translate-y-1 ${
+      noShadow 
+        ? "" 
+        : "shadow-sm lg:shadow-[0_20px_60px_rgba(15,23,42,0.08)] hover:shadow-[0_25px_70px_rgba(15,23,42,0.14)]"
+    }`}>
       <Link href={`/produse/${id}`} className="group flex flex-1 flex-col">
         <div className="relative aspect-square w-full overflow-hidden bg-zinc-100">
           <Image

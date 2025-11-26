@@ -53,11 +53,11 @@ export default async function Home() {
         )}
       </section>
 
-      {/* Secțiunea De ce să cumperi de la noi */}
-      <WhyBuyFromUs />
-
       {/* Secțiunea Produse noi */}
       <NewProducts produse={produse} />
+
+      {/* Secțiunea De ce să cumperi de la noi */}
+      <WhyBuyFromUs />
 
       {/* Secțiunea Newsletter */}
       <Newsletter />
