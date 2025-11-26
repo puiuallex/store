@@ -52,6 +52,7 @@ export default function CheckoutPage() {
           product_name: item.name,
           quantity: item.quantity,
           price: item.price,
+          color: item.color || null,
         })),
         subtotal,
         shipping_cost: shippingCost,

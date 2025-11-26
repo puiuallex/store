@@ -190,6 +190,9 @@ export default function OrderDetailsPage({ params }) {
                     <p className="font-medium text-zinc-900">{item.product_name}</p>
                     <p className="text-sm text-zinc-600">
                       Cantitate: {item.quantity} × {item.price.toFixed(2)} lei
+                      {item.color && (
+                        <span className="ml-2">• Culoare: <span className="font-medium">{item.color}</span></span>
+                      )}
                     </p>
                   </div>
                   <p className="font-semibold text-zinc-900">

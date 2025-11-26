@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import CustomizedProductModal from "@/components/CustomizedProductModal";
+import ColorSelectionModal from "@/components/ColorSelectionModal";
 
-export default function AddToCartButton({ produs, size = "md" }) {
+export default function AddToCartButton({ produs, size = "md", selectedColor = null, disabled = false }) {
   const { addItem } = useCart();
   const { showToast } = useToast();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isColorModalOpen, setIsColorModalOpen] = useState(false);
 
   const handleClick = () => {
     // Dacă produsul este personalizat, deschide modalul
@@ -19,10 +21,59 @@ export default function AddToCartButton({ produs, size = "md" }) {
       return;
     }
 
-    // Altfel, adaugă în coș normal
-    addItem(produs, 1);
+    // Dacă selectedColor este pasat ca prop și nu e null, folosește-l direct
+    if (selectedColor !== null) {
+      addItem(produs, 1, selectedColor);
+      showToast(
+        `${produs.nume}${selectedColor ? ` (${selectedColor})` : ""} a fost adăugat în coș`,
+        "success",
+        [
+          {
+            label: "Vezi coș",
+            onClick: () => router.push("/cos"),
+            primary: false,
+          },
+          {
+            label: "Finalizează",
+            onClick: () => router.push("/checkout"),
+            primary: true,
+          },
+        ]
+      );
+      return;
+    }
+
+    // Dacă produsul are culori și nu e selectată culoarea, deschide modalul
+    if (produs.culori && produs.culori.length > 1) {
+      setIsColorModalOpen(true);
+      return;
+    }
+
+    // Altfel, adaugă în coș normal (fără culoare sau cu culoarea unică)
+    const color = produs.culori && produs.culori.length === 1 ? produs.culori[0] : null;
+    addItem(produs, 1, color);
     showToast(
       `${produs.nume} a fost adăugat în coș`,
+      "success",
+      [
+        {
+          label: "Vezi coș",
+          onClick: () => router.push("/cos"),
+          primary: false,
+        },
+        {
+          label: "Finalizează",
+          onClick: () => router.push("/checkout"),
+          primary: true,
+        },
+      ]
+    );
+  };
+
+  const handleColorSelect = (color) => {
+    addItem(produs, 1, color);
+    showToast(
+      `${produs.nume}${color ? ` (${color})` : ""} a fost adăugat în coș`,
       "success",
       [
         {
@@ -60,6 +111,13 @@ export default function AddToCartButton({ produs, size = "md" }) {
       <CustomizedProductModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        productName={produs.nume}
+      />
+      <ColorSelectionModal
+        isOpen={isColorModalOpen}
+        onClose={() => setIsColorModalOpen(false)}
+        colors={produs.culori || []}
+        onSelect={handleColorSelect}
         productName={produs.nume}
       />
     </>

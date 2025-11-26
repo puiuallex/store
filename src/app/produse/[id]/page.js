@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import AddToCartButton from "@/components/AddToCartButton";
+import ProductColorSelector from "@/components/ProductColorSelector";
 import ProductImageGallery from "@/components/ProductImageGallery";
 import { getProductById, getAllProducts } from "@/app/actions/products";
 
@@ -74,10 +74,12 @@ export default async function ProductPage({ params }) {
         </div>
         <div className="flex flex-wrap gap-2 lg:gap-4 text-xs lg:text-sm text-zinc-700">
           <DetailPill label="Disponibilitate" value={produs.stoc ? "În stoc" : "La comandă"} />
-          <DetailPill label="Culori" value={produs.culori.join(", ")} />
+          {produs.culori && produs.culori.length > 0 && (
+            <DetailPill label="Culori disponibile" value={produs.culori.join(", ")} />
+          )}
         </div>
         <div className="w-full lg:w-auto">
-          <AddToCartButton produs={produs} size="lg" />
+          <ProductColorSelector produs={produs} />
         </div>
         <p className="text-[10px] lg:text-xs text-zinc-500 leading-relaxed">
           Plata se face la livrare. Confirmăm telefonic înainte să expediem coletul.

@@ -46,12 +46,18 @@ export function CartProvider({ children }) {
     }
   }, [items, isHydrated]);
 
-  const addItem = useCallback((product, quantity = 1) => {
+  const addItem = useCallback((product, quantity = 1, color = null) => {
     setItems((current) => {
-      const existing = current.find((item) => item.id === product.id);
+      // Verifică dacă există deja același produs cu aceeași culoare
+      const existing = current.find(
+        (item) => item.id === product.id && item.color === color
+      );
+      
       if (existing) {
         return current.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item,
+          item.id === product.id && item.color === color
+            ? { ...item, quantity: item.quantity + quantity }
+            : item,
         );
       }
 
@@ -63,22 +69,27 @@ export function CartProvider({ children }) {
           price: product.pret_oferta || product.pret,
           image: product.imagine,
           quantity,
+          color: color || null,
         },
       ];
     });
   }, []);
 
-  const removeItem = useCallback((id) => {
-    setItems((current) => current.filter((item) => item.id !== id));
+  const removeItem = useCallback((id, color = null) => {
+    setItems((current) => 
+      current.filter((item) => !(item.id === id && item.color === color))
+    );
   }, []);
 
-  const updateQuantity = useCallback((id, quantity) => {
+  const updateQuantity = useCallback((id, quantity, color = null) => {
     if (quantity <= 0) {
-      removeItem(id);
+      removeItem(id, color);
       return;
     }
     setItems((current) =>
-      current.map((item) => (item.id === id ? { ...item, quantity } : item)),
+      current.map((item) => 
+        (item.id === id && item.color === color) ? { ...item, quantity } : item
+      ),
     );
   }, [removeItem]);
 

@@ -86,10 +86,15 @@ export default function CartPage() {
                       >
                         {item.name}
                       </Link>
+                      {item.color && (
+                        <p className="mt-1 text-xs text-zinc-500 sm:text-sm">
+                          Culoare: <span className="font-medium">{item.color}</span>
+                        </p>
+                      )}
                     </div>
                     <button
                       type="button"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item.id, item.color)}
                       className="flex-shrink-0 rounded-full p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-600 transition sm:p-2"
                       aria-label="Elimină produs"
                     >
@@ -103,7 +108,7 @@ export default function CartPage() {
 
               {/* Footer cu cantitate și preț total - pe rând nou pe desktop */}
               <div className="flex items-center justify-between gap-4 px-4 pt-4 pb-4 border-t border-zinc-100 sm:px-6 sm:pb-6 sm:pt-6">
-                <QuantityInput value={item.quantity} onChange={(value) => updateQuantity(item.id, value)} />
+                <QuantityInput value={item.quantity} onChange={(value) => updateQuantity(item.id, value, item.color)} />
                 <div className="text-right">
                   <p className="text-sm font-semibold text-zinc-900 sm:text-xl">
                     {(item.price * item.quantity).toFixed(2)} lei
