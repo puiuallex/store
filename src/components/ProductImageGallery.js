@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 export default function ProductImageGallery({ imagini, nume }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   if (!imagini || imagini.length === 0) {
     return (
@@ -18,19 +21,30 @@ export default function ProductImageGallery({ imagini, nume }) {
 
   const selectedImage = imagini[selectedIndex];
 
+  // Pregătește imagini pentru lightbox
+  const lightboxSlides = imagini.map((imagine) => ({
+    src: imagine,
+    alt: `${nume} - Imagine`,
+  }));
+
   return (
-    <div className="space-y-3 lg:space-y-4">
-      {/* Imagine principală */}
-      <div className="relative h-[300px] lg:h-[480px] overflow-hidden rounded-2xl lg:rounded-3xl bg-zinc-100">
-        <Image
-          src={selectedImage}
-          alt={`${nume} - Imagine ${selectedIndex + 1}`}
-          fill
-          className="object-cover"
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          priority={selectedIndex === 0}
-        />
-      </div>
+    <>
+      <div className="space-y-3 lg:space-y-4">
+        {/* Imagine principală - clickable pentru lightbox */}
+        <div
+          onClick={() => setLightboxOpen(true)}
+          className="relative h-[300px] lg:h-[480px] overflow-hidden rounded-2xl lg:rounded-3xl bg-zinc-100 cursor-zoom-in group"
+        >
+          <Image
+            src={selectedImage}
+            alt={`${nume} - Imagine ${selectedIndex + 1}`}
+            fill
+            className="object-cover transition duration-300 group-hover:scale-105"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            priority={selectedIndex === 0}
+          />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition" />
+        </div>
 
       {/* Thumbnails */}
       {imagini.length > 1 && (
@@ -57,7 +71,17 @@ export default function ProductImageGallery({ imagini, nume }) {
           ))}
         </div>
       )}
-    </div>
+      </div>
+
+      {/* Lightbox */}
+      <Lightbox
+        open={lightboxOpen}
+        close={() => setLightboxOpen(false)}
+        index={selectedIndex}
+        slides={lightboxSlides}
+        on={{ view: ({ index }) => setSelectedIndex(index) }}
+      />
+    </>
   );
 }
 

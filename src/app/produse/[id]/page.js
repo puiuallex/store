@@ -84,6 +84,12 @@ export default async function ProductPage({ params }) {
             </p>
           )}
         </div>
+        <div className="flex flex-wrap gap-2 lg:gap-4 text-xs lg:text-sm text-zinc-700">
+          <DetailPill label="Disponibilitate" value={produs.stoc ? "În stoc" : "La comandă"} />
+          {produs.culori && produs.culori.length > 0 && (
+            <DetailPill label="Culori" value={produs.culori.join(", ")} />
+          )}
+        </div>
         <div className="flex items-center gap-3 lg:gap-4">
           {produs.pret_oferta ? (
             <div className="flex flex-col gap-1.5 lg:gap-2">
@@ -99,12 +105,6 @@ export default async function ProductPage({ params }) {
             </div>
           ) : (
             <span className="text-2xl lg:text-4xl font-semibold text-zinc-900">{produs.pret} lei</span>
-          )}
-        </div>
-        <div className="flex flex-wrap gap-2 lg:gap-4 text-xs lg:text-sm text-zinc-700">
-          <DetailPill label="Disponibilitate" value={produs.stoc ? "În stoc" : "La comandă"} />
-          {produs.culori && produs.culori.length > 0 && (
-            <DetailPill label="Culori disponibile" value={produs.culori.join(", ")} />
           )}
         </div>
         <div className="w-full lg:w-auto">
