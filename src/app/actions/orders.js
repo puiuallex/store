@@ -27,6 +27,7 @@ export async function createOrder(orderData, userId = null) {
         user_id: userId, // null pentru guest orders
         items: orderData.items,
         subtotal: orderData.subtotal,
+        shipping_cost: shippingCost,
         total: total,
         shipping_address: orderData.shipping_address,
         notes: orderData.notes || null,

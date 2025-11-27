@@ -4,6 +4,7 @@ import ConditionalLayout from "@/components/ConditionalLayout";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { ToastProvider } from "@/context/ToastContext";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,6 +59,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ro">
       <body className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} antialiased`}>
+        <GoogleAnalytics />
         <AuthProvider>
           <CartProvider>
             <ToastProvider>

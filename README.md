@@ -8,9 +8,9 @@ Funcționalități principale:
 - Formulare de login/register pregătite pentru integrarea Supabase Auth
 - Toate textele în limba română, fără referințe la tehnologia de fabricație
 
-### Integrare Supabase (opțional)
+### Integrare Supabase
 
-Când ești gata să conectezi backend-ul, adaugă într-un `.env.local`:
+Adaugă într-un `.env.local`:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=...
@@ -18,7 +18,17 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
 ```
 
-Aceste variabile vor fi folosite pentru autentificare și viitoarele servicii de gestiune a comenzilor.
+Aceste variabile sunt folosite pentru autentificare, gestiunea comenzilor și analytics.
+
+### Integrare Google Analytics (opțional)
+
+Pentru analize avansate, adaugă în `.env.local`:
+
+```
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+Fără această variabilă, aplicația va funcționa normal, dar Google Analytics nu va fi activat.
 
 ### Scripturi utile
 
@@ -26,8 +36,17 @@ Aceste variabile vor fi folosite pentru autentificare și viitoarele servicii de
 - `npm run lint` – rulează ESLint
 - `npm run build` / `npm run start` – pregătește deploy-ul
 
-### Următorii pași
+### Analytics
 
-- Conectează formularul de autentificare/înregistrare la Supabase Auth
-- Adaugă procesator de plăți cu cardul (Stripe/EuPlătesc)
-- Creează un panou intern pentru administrarea produselor și comenzilor
+Aplicația include un sistem complet de tracking:
+
+- **Tracking propriu**: Vizualizări pagini, evenimente (adăugări în coș, checkout, comenzi), vizitatori unici
+- **Dashboard analytics**: Accesibil din `/admin/analytics` cu metrici detaliate
+- **Google Analytics**: Integrare opțională pentru analize avansate
+
+Evenimente trackate:
+- Vizualizări pagini (automat)
+- Vizualizări produse
+- Adăugări în coș
+- Start checkout
+- Comenzi finalizate
