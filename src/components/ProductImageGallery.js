@@ -35,16 +35,16 @@ export default function ProductImageGallery({ imagini, nume }) {
           onClick={() => setLightboxOpen(true)}
           className="relative h-[300px] lg:h-[480px] overflow-hidden rounded-2xl lg:rounded-3xl bg-zinc-100 cursor-zoom-in group"
         >
-          <Image
-            src={selectedImage}
-            alt={`${nume} - Imagine ${selectedIndex + 1}`}
-            fill
+        <Image
+          src={selectedImage}
+          alt={`${nume} - Imagine ${selectedIndex + 1}`}
+          fill
             className="object-cover transition duration-300 group-hover:scale-105"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            priority={selectedIndex === 0}
-          />
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          priority={selectedIndex === 0}
+        />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition" />
-        </div>
+      </div>
 
       {/* Thumbnails */}
       {imagini.length > 1 && (
@@ -72,7 +72,7 @@ export default function ProductImageGallery({ imagini, nume }) {
           ))}
         </div>
       )}
-      </div>
+    </div>
 
       {/* Lightbox */}
       <Lightbox

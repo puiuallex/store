@@ -46,7 +46,46 @@ export async function getAllProducts() {
         pret_oferta: product.pret_oferta ? parseFloat(product.pret_oferta) : null,
         categorie: categorii.length > 0 ? categorii[0] : product.categorie || "", // Prima categorie pentru compatibilitate
         categorii: categorii, // Toate categoriile
-        culori: product.culori || [],
+        culori: (() => {
+          try {
+            // Gestionează cazul în care culori este un string JSON
+            let culoriArray = product.culori;
+            if (typeof culoriArray === "string") {
+              try {
+                culoriArray = JSON.parse(culoriArray);
+              } catch {
+                // Dacă nu e JSON valid, tratează ca string simplu
+                culoriArray = [culoriArray];
+              }
+            }
+            if (!Array.isArray(culoriArray)) {
+              culoriArray = culoriArray ? [culoriArray] : [];
+            }
+            
+            return culoriArray
+              .filter((c) => c != null) // Filtrează null/undefined
+              .map((c) => {
+                // Parsează formatul "nume:hex" sau păstrează formatul vechi
+                if (typeof c === "string" && c.includes(":")) {
+                  const [nume, hex] = c.split(":");
+                  return { nume: nume.trim(), hex: hex.trim() || "#000000" };
+                }
+                // Format vechi (doar nume) - convertește în obiect pentru compatibilitate
+                if (typeof c === "string") {
+                  return { nume: c, hex: "#000000" };
+                }
+                // Dacă e obiect, verifică că are proprietăți valide
+                if (c && typeof c === "object") {
+                  return { nume: c.nume || "", hex: c.hex || "#000000" };
+                }
+                return { nume: "", hex: "#000000" };
+              })
+              .filter((c) => c.nume && c.nume.trim().length > 0);
+          } catch (error) {
+            console.error("Eroare la parsarea culorilor:", error);
+            return [];
+          }
+        })(),
         imagini: imagini,
         imagine: imagini[0] || null, // Prima imagine pentru compatibilitate
         noutate: product.noutate || false,
@@ -109,7 +148,46 @@ export async function getProductById(productId) {
       pret_oferta: data.pret_oferta ? parseFloat(data.pret_oferta) : null,
       categorie: categorii.length > 0 ? categorii[0] : data.categorie || "", // Prima categorie pentru compatibilitate
       categorii: categorii, // Toate categoriile
-      culori: data.culori || [],
+      culori: (() => {
+        try {
+          // Gestionează cazul în care culori este un string JSON
+          let culoriArray = data.culori;
+          if (typeof culoriArray === "string") {
+            try {
+              culoriArray = JSON.parse(culoriArray);
+            } catch {
+              // Dacă nu e JSON valid, tratează ca string simplu
+              culoriArray = [culoriArray];
+            }
+          }
+          if (!Array.isArray(culoriArray)) {
+            culoriArray = culoriArray ? [culoriArray] : [];
+          }
+          
+          return culoriArray
+            .filter((c) => c != null) // Filtrează null/undefined
+            .map((c) => {
+              // Parsează formatul "nume:hex" sau păstrează formatul vechi
+              if (typeof c === "string" && c.includes(":")) {
+                const [nume, hex] = c.split(":");
+                return { nume: nume.trim(), hex: hex.trim() || "#000000" };
+              }
+              // Format vechi (doar nume) - convertește în obiect pentru compatibilitate
+              if (typeof c === "string") {
+                return { nume: c, hex: "#000000" };
+              }
+              // Dacă e obiect, verifică că are proprietăți valide
+              if (c && typeof c === "object") {
+                return { nume: c.nume || "", hex: c.hex || "#000000" };
+              }
+              return { nume: "", hex: "#000000" };
+            })
+            .filter((c) => c.nume && c.nume.trim().length > 0);
+        } catch (error) {
+          console.error("Eroare la parsarea culorilor:", error);
+          return [];
+        }
+      })(),
       imagini: imagini,
       imagine: imagini[0] || null, // Prima imagine pentru compatibilitate
       noutate: data.noutate || false,

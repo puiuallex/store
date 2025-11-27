@@ -1,9 +1,6 @@
 import { Geist, Geist_Mono, Orbitron } from "next/font/google";
 import "./globals.css";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
-import ShippingBanner from "@/components/ShippingBanner";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import ConditionalLayout from "@/components/ConditionalLayout";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { ToastProvider } from "@/context/ToastContext";
@@ -47,7 +44,7 @@ export const metadata = {
     locale: "ro_RO",
     url: "https://creatinglayers.ro",
     siteName: "Creating Layers",
-    title: "Creating Layers | Produse românești",
+  title: "Creating Layers | Produse românești",
     description: "Magazin online românesc cu produse de calitate - livrare rapidă și plată ramburs.",
   },
   twitter: {
@@ -64,15 +61,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <CartProvider>
             <ToastProvider>
-              <div className="flex min-h-screen flex-col bg-gradient-to-b from-zinc-100 via-white to-zinc-100">
-                <ShippingBanner />
-                <SiteHeader />
-                <main className="mx-auto w-full max-w-6xl flex-1 px-6 pb-16 pt-16 lg:px-8">
-                  {children}
-                </main>
-                <SiteFooter />
-              </div>
-              <WhatsAppButton />
+              <ConditionalLayout>{children}</ConditionalLayout>
             </ToastProvider>
           </CartProvider>
         </AuthProvider>

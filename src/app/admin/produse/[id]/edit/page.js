@@ -8,6 +8,30 @@ import { getProductById, updateProduct } from "@/app/actions/products";
 import { checkAdminAccess } from "@/app/actions/admin";
 import { getAllCategories } from "@/app/actions/categories";
 import MultiImageUpload from "@/components/MultiImageUpload";
+import ColorPicker from "@/components/ColorPicker";
+
+// Funcție helper pentru a obține hex-ul unei culori predefinite după nume
+function getColorHexByName(nume) {
+  const predefinedColors = {
+    "Negru": "#000000",
+    "Alb": "#FFFFFF",
+    "Grafit": "#36454F",
+    "Gri": "#808080",
+    "Bej": "#F5F5DC",
+    "Ivory": "#FFFFF0",
+    "Maro": "#8B4513",
+    "Roșu": "#FF0000",
+    "Albastru": "#0000FF",
+    "Verde": "#008000",
+    "Galben": "#FFFF00",
+    "Portocaliu": "#FFA500",
+    "Roz": "#FFC0CB",
+    "Mov": "#800080",
+    "Turcoaz": "#40E0D0",
+    "Verde mentă": "#98FF98",
+  };
+  return predefinedColors[nume] || null;
+}
 
 export default function EditProductPage({ params }) {
   const { user, loading: authLoading } = useAuth();
@@ -26,7 +50,7 @@ export default function EditProductPage({ params }) {
     pret: "",
     pret_oferta: "",
     categorii: [],
-    culori: "",
+    culori: [],
     imagini: [],
     noutate: false,
     stoc: true,
@@ -72,7 +96,25 @@ export default function EditProductPage({ params }) {
             pret: product.pret.toString(),
             pret_oferta: product.pret_oferta ? product.pret_oferta.toString() : "",
             categorii: product.categorii || (product.categorie ? [product.categorie] : []),
-            culori: product.culori?.join(", ") || "",
+            culori: (product.culori || [])
+              .filter((c) => c != null)
+              .map((c) => {
+                // Parsează formatul "nume:hex" sau păstrează formatul vechi
+                if (typeof c === "string" && c.includes(":")) {
+                  const [nume, hex] = c.split(":");
+                  return { nume: nume.trim(), hex: hex.trim() || "#000000" };
+                }
+                // Format vechi (doar nume)
+                if (typeof c === "string") {
+                  return { nume: c, hex: getColorHexByName(c) || "#000000" };
+                }
+                // Format obiect
+                if (c && typeof c === "object") {
+                  return { nume: c.nume || "", hex: c.hex || "#000000" };
+                }
+                return { nume: "", hex: "#000000" };
+              })
+              .filter((c) => c.nume && c.nume.trim().length > 0),
             imagini: product.imagini || (product.imagine ? [product.imagine] : []),
             noutate: product.noutate || false,
             stoc: product.stoc !== undefined ? product.stoc : true,
@@ -100,14 +142,33 @@ export default function EditProductPage({ params }) {
       return;
     }
 
-    // Transformă culori în array
+    // Filtrează culorile goale și salvează în format "nume:hex" pentru a păstra ambele informații
     const productData = {
       ...formData,
       pret: parseFloat(formData.pret),
       pret_oferta: formData.pret_oferta ? parseFloat(formData.pret_oferta) : null,
       culori: formData.culori
-        .split(",")
-        .map((c) => c.trim())
+        .filter((c) => {
+          if (!c) return false;
+          if (typeof c === "string") return c.trim().length > 0;
+          return c && c.nume && c.nume.trim().length > 0;
+        })
+        .map((c) => {
+          // Dacă e string (format vechi), păstrează-l sau convertește
+          if (typeof c === "string") {
+            // Verifică dacă e deja în format "nume:hex"
+            if (c.includes(":")) {
+              return c;
+            }
+            // Altfel, adaugă hex default
+            return `${c.trim()}:${getColorHexByName(c.trim()) || "#000000"}`;
+          }
+          // Format nou: salvează ca "nume:hex"
+          if (c && typeof c === "object" && c.nume) {
+            return `${c.nume.trim()}:${c.hex || "#000000"}`;
+          }
+          return "";
+        })
         .filter((c) => c.length > 0),
     };
 
@@ -292,15 +353,53 @@ export default function EditProductPage({ params }) {
 
         <div>
           <label className="flex flex-col text-sm font-medium text-zinc-700">
-            Culori (separate prin virgulă)
-            <input
-              type="text"
-              name="culori"
-              value={formData.culori}
-              onChange={handleChange}
-              className="mt-2 rounded-2xl border border-zinc-200 bg-zinc-50/60 px-4 py-3 text-sm text-zinc-800 outline-none transition focus:border-emerald-500 focus:bg-white"
-              placeholder="ex: Grafit, Ivory, Verde mentă"
-            />
+            Culori disponibile
+            <div className="mt-2 space-y-4">
+              {formData.culori
+                .filter((c) => c != null)
+                .map((culoare, index) => {
+                  // Suport pentru format vechi (string) și format nou (obiect)
+                  const culoareObj = !culoare
+                    ? { nume: "", hex: "#000000" }
+                    : typeof culoare === "string" 
+                    ? { nume: culoare, hex: "#000000" }
+                    : { nume: culoare.nume || "", hex: culoare.hex || "#000000" };
+                
+                return (
+                  <div key={index} className="rounded-lg border border-zinc-200 bg-zinc-50/30 p-3">
+                    <ColorPicker
+                      value={culoareObj}
+                      onChange={(newColor) => {
+                        const newCulori = [...formData.culori];
+                        newCulori[index] = newColor;
+                        setFormData({ ...formData, culori: newCulori });
+                      }}
+                      onDelete={() => {
+                        setFormData({
+                          ...formData,
+                          culori: formData.culori.filter((_, i) => i !== index),
+                        });
+                      }}
+                    />
+                  </div>
+                );
+              })}
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData({
+                    ...formData,
+                    culori: [...formData.culori, { nume: "", hex: "#000000" }],
+                  });
+                }}
+                className="w-full rounded-lg border-2 border-dashed border-zinc-300 bg-white px-4 py-3 text-sm font-semibold text-zinc-700 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700"
+              >
+                + Adaugă culoare
+              </button>
+            </div>
+            <span className="mt-1 text-xs text-zinc-500">
+              Lasă gol dacă produsul nu are variante de culoare
+            </span>
           </label>
         </div>
 

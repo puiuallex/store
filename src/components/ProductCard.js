@@ -71,7 +71,15 @@ export default function ProductCard({ produs, noShadow = false }) {
               <dt className="text-xs uppercase tracking-widest text-zinc-400">
                 Culori
               </dt>
-              <dd>{culori.join(", ")}</dd>
+              <dd>
+                {culori && culori.length > 0
+                  ? culori
+                      .filter((c) => c != null)
+                      .map((c) => (typeof c === "string" ? c : c?.nume || ""))
+                      .filter((n) => n)
+                      .join(", ")
+                  : "-"}
+              </dd>
             </div>
             <div>
               <dt className="text-xs uppercase tracking-widest text-zinc-400">
@@ -97,7 +105,7 @@ export default function ProductCard({ produs, noShadow = false }) {
           )}
         </div>
         <div className="w-full lg:w-auto">
-          <AddToCartButton produs={produs} size="sm" />
+        <AddToCartButton produs={produs} size="sm" />
         </div>
       </div>
     </article>

@@ -116,3 +116,92 @@ export async function updateOrderStatus(orderId, newStatus, userId = null) {
   }
 }
 
+// Obține statistici pentru dashboard (doar pentru admin)
+export async function getAdminStats(userId = null) {
+  try {
+    const adminCheck = await checkAdminAccess(userId);
+
+    if (!adminCheck.isAdmin) {
+      return { error: adminCheck.error, data: null };
+    }
+
+    const supabase = createServerSupabaseClient();
+
+    if (!supabase) {
+      return { error: "Supabase nu este configurat", data: null };
+    }
+
+    // Obține toate comenzile
+    const { data: orders, error: ordersError } = await supabase
+      .from("orders")
+      .select("id, total, subtotal, shipping_cost, created_at, status");
+
+    if (ordersError) {
+      console.error("Eroare la obținerea comenzilor:", ordersError);
+    }
+
+    // Obține toate produsele
+    const { data: products, error: productsError } = await supabase
+      .from("products")
+      .select("id, stoc");
+
+    if (productsError) {
+      console.error("Eroare la obținerea produselor:", productsError);
+    }
+
+    // Obține abonații newsletter
+    const { data: newsletter, error: newsletterError } = await supabase
+      .from("newsletter_subscribers")
+      .select("id, created_at, status")
+      .eq("status", "active");
+
+    if (newsletterError) {
+      console.error("Eroare la obținerea abonaților:", newsletterError);
+    }
+
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const ordersList = orders || [];
+    const productsList = products || [];
+    const newsletterList = newsletter || [];
+
+    // Calculează statistici
+    const stats = {
+      // Comenzi
+      totalOrders: ordersList.length,
+      newOrdersToday: ordersList.filter(
+        (o) => new Date(o.created_at) >= todayStart && o.status === "nouă"
+      ).length,
+      totalRevenue: ordersList.reduce((sum, o) => sum + (parseFloat(o.total) || parseFloat(o.subtotal) || 0), 0),
+      revenueToday: ordersList
+        .filter((o) => new Date(o.created_at) >= todayStart)
+        .reduce((sum, o) => sum + (parseFloat(o.total) || parseFloat(o.subtotal) || 0), 0),
+      revenueThisWeek: ordersList
+        .filter((o) => new Date(o.created_at) >= weekStart)
+        .reduce((sum, o) => sum + (parseFloat(o.total) || parseFloat(o.subtotal) || 0), 0),
+      revenueThisMonth: ordersList
+        .filter((o) => new Date(o.created_at) >= monthStart)
+        .reduce((sum, o) => sum + (parseFloat(o.total) || parseFloat(o.subtotal) || 0), 0),
+      
+      // Produse
+      totalProducts: productsList.length,
+      productsInStock: productsList.filter((p) => p.stoc).length,
+      productsOutOfStock: productsList.filter((p) => !p.stoc).length,
+      
+      // Newsletter
+      totalNewsletterSubscribers: newsletterList.length,
+      newSubscribersToday: newsletterList.filter(
+        (s) => new Date(s.created_at) >= todayStart
+      ).length,
+    };
+
+    return { data: stats, error: null };
+  } catch (error) {
+    console.error("Eroare:", error);
+    return { error: "A apărut o eroare neașteptată.", data: null };
+  }
+}
+

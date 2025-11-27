@@ -144,11 +144,20 @@ export default async function ProductPage({ params }) {
             </p>
           )}
         </div>
-        <div className="flex flex-wrap gap-2 lg:gap-4 text-xs lg:text-sm text-zinc-700">
-          <DetailPill label="Disponibilitate" value={produs.stoc ? "În stoc" : "La comandă"} />
-          {produs.culori && produs.culori.length > 0 && (
-            <DetailPill label="Culori" value={produs.culori.join(", ")} />
-          )}
+        {/* Indicator disponibilitate */}
+        <div className="flex items-center gap-2">
+          <span
+            className={`h-2 w-2 rounded-full ${
+              produs.stoc ? "bg-emerald-500" : "bg-amber-500"
+            }`}
+            title={produs.stoc ? "În stoc" : "La comandă"}
+          />
+          <span className="text-xs lg:text-sm text-zinc-600">
+            {produs.stoc ? "În stoc" : "La comandă"}
+          </span>
+        </div>
+        <div className="w-full lg:w-auto">
+          <ProductColorSelector produs={produs} />
         </div>
         <div className="flex items-center gap-3 lg:gap-4">
           {produs.pret_oferta ? (
@@ -166,9 +175,6 @@ export default async function ProductPage({ params }) {
           ) : (
             <span className="text-2xl lg:text-4xl font-semibold text-zinc-900">{produs.pret} lei</span>
           )}
-        </div>
-        <div className="w-full lg:w-auto">
-          <ProductColorSelector produs={produs} />
         </div>
         <ProductShare 
           productName={produs.nume}
@@ -196,13 +202,4 @@ export default async function ProductPage({ params }) {
   );
 }
 
-function DetailPill({ label, value }) {
-  return (
-    <span className="rounded-full border border-zinc-200 bg-white px-3 py-1.5 lg:px-4 lg:py-2">
-      <span className="text-[10px] lg:text-xs uppercase tracking-[0.3em] text-zinc-400">{label}</span>
-      <br />
-      <span className="text-xs lg:text-sm">{value}</span>
-    </span>
-  );
-}
 

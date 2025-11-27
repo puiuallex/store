@@ -14,6 +14,14 @@ export default function OrderDetailsPage({ params }) {
   const router = useRouter();
   const [orderId, setOrderId] = useState(null);
 
+  // Funcție helper pentru a extrage numele culorii
+  const getColorName = (color) => {
+    if (!color) return null;
+    if (typeof color === "string") return color;
+    if (typeof color === "object" && color.nume) return color.nume;
+    return null;
+  };
+
   useEffect(() => {
     async function loadOrderId() {
       const resolvedParams = await params;
@@ -191,7 +199,7 @@ export default function OrderDetailsPage({ params }) {
                     <p className="text-sm text-zinc-600">
                       Cantitate: {item.quantity} × {item.price.toFixed(2)} lei
                       {item.color && (
-                        <span className="ml-2">• Culoare: <span className="font-medium">{item.color}</span></span>
+                        <span className="ml-2">• Culoare: <span className="font-medium">{getColorName(item.color)}</span></span>
                       )}
                     </p>
                   </div>

@@ -3,31 +3,21 @@
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { getAllCategories, createCategory, deleteCategory } from "@/app/actions/categories";
-import { checkAdminAccess } from "@/app/actions/admin";
+import { useToast } from "@/context/ToastContext";
 
 export default function AdminCategoriesPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const { showToast } = useToast();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [isAdding, setIsAdding] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function loadData() {
       if (!authLoading && user) {
-        const adminCheck = await checkAdminAccess(user.id);
-        setIsAdmin(adminCheck.isAdmin);
-
-        if (!adminCheck.isAdmin) {
-          router.push("/");
-          return;
-        }
-
         const result = await getAllCategories();
         if (result.data) {
           setCategories(result.data);
@@ -44,17 +34,16 @@ export default function AdminCategoriesPage() {
   const handleAddCategory = async (e) => {
     e.preventDefault();
     if (!newCategoryName.trim()) {
-      setError("Numele categoriei este obligatoriu.");
+      showToast("Numele categoriei este obligatoriu.", "error");
       return;
     }
 
     setIsAdding(true);
-    setError(null);
 
     const result = await createCategory(newCategoryName.trim(), user?.id || null);
 
     if (result.error) {
-      setError(result.error);
+      showToast(result.error, "error");
       setIsAdding(false);
     } else {
       setNewCategoryName("");
@@ -63,21 +52,23 @@ export default function AdminCategoriesPage() {
       if (refreshResult.data) {
         setCategories(refreshResult.data);
       }
+      showToast(`Categoria "${newCategoryName.trim()}" a fost adăugată cu succes.`);
       setIsAdding(false);
     }
   };
 
-  const handleDelete = async (categoryId) => {
-    if (!confirm("Ești sigur că vrei să ștergi această categorie?")) {
+  const handleDelete = async (categoryId, categoryName) => {
+    if (!confirm(`Ești sigur că vrei să ștergi categoria "${categoryName}"?`)) {
       return;
     }
 
     const result = await deleteCategory(categoryId, user?.id || null);
 
     if (result.error) {
-      alert(result.error);
+      showToast(result.error, "error");
     } else {
       setCategories(categories.filter((c) => c.id !== categoryId));
+      showToast(`Categoria "${categoryName}" a fost ștearsă cu succes.`);
     }
   };
 
@@ -92,66 +83,48 @@ export default function AdminCategoriesPage() {
     );
   }
 
-  if (!isAdmin) {
-    return null;
-  }
-
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold text-zinc-900">Gestionare categorii</h1>
-          <p className="mt-1 text-sm text-zinc-600">Gestionează categoriile de produse</p>
-        </div>
-        <Link
-          href="/admin"
-          className="inline-flex items-center text-sm font-semibold text-emerald-600 hover:text-emerald-500"
-        >
-          ← Înapoi la panou
-        </Link>
+      <div>
+        <h1 className="text-3xl font-bold text-zinc-900">Categorii</h1>
+        <p className="mt-1 text-sm text-zinc-600">Gestionează categoriile de produse</p>
       </div>
 
       {/* Formular pentru adăugare categorie */}
-      <div className="rounded-3xl border border-zinc-200 bg-white/80 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-        <h2 className="text-xl font-semibold text-zinc-900 mb-4">Adaugă categorie nouă</h2>
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-zinc-900 mb-4">Adaugă categorie nouă</h2>
         <form onSubmit={handleAddCategory} className="flex gap-3">
           <input
             type="text"
             value={newCategoryName}
-            onChange={(e) => {
-              setNewCategoryName(e.target.value);
-              setError(null);
-            }}
+            onChange={(e) => setNewCategoryName(e.target.value)}
             placeholder="Nume categorie"
-            className="flex-1 rounded-2xl border border-zinc-200 bg-zinc-50/60 px-4 py-3 text-sm text-zinc-800 outline-none transition focus:border-emerald-500 focus:bg-white"
+            className="flex-1 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             disabled={isAdding}
           />
           <button
             type="submit"
             disabled={isAdding}
-            className="rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isAdding ? "Se adaugă..." : "+ Adaugă"}
           </button>
         </form>
-        {error && (
-          <p className="mt-3 text-sm text-rose-600">{error}</p>
-        )}
       </div>
 
       {/* Lista categoriilor */}
-      <div className="rounded-3xl border border-zinc-200 bg-white/80 shadow-[0_20px_60px_rgba(15,23,42,0.08)] overflow-hidden">
+      <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-zinc-50 border-b border-zinc-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
                   Nume categorie
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
                   Data creării
                 </th>
-                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-zinc-700">
                   Acțiuni
                 </th>
               </tr>
@@ -165,7 +138,7 @@ export default function AdminCategoriesPage() {
                 </tr>
               ) : (
                 categories.map((category) => (
-                  <tr key={category.id} className="hover:bg-zinc-50">
+                  <tr key={category.id} className="hover:bg-zinc-50 transition">
                     <td className="px-6 py-4">
                       <p className="font-semibold text-zinc-900">{category.nume}</p>
                     </td>
@@ -178,7 +151,7 @@ export default function AdminCategoriesPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button
-                        onClick={() => handleDelete(category.id)}
+                        onClick={() => handleDelete(category.id, category.nume)}
                         className="rounded-lg border border-rose-300 bg-white px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-50"
                       >
                         Șterge
@@ -194,4 +167,3 @@ export default function AdminCategoriesPage() {
     </div>
   );
 }
-

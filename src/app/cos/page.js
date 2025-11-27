@@ -13,6 +13,14 @@ export default function CartPage() {
   const { user } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
+  // Funcție helper pentru a extrage numele culorii
+  const getColorName = (color) => {
+    if (!color) return null;
+    if (typeof color === "string") return color;
+    if (typeof color === "object" && color.nume) return color.nume;
+    return null;
+  };
+
   // Calcul cost livrare: 20 lei dacă subtotal <= 100, altfel gratuit
   const shippingCost = subtotal <= 100 ? 20 : 0;
   const total = subtotal + shippingCost;
@@ -88,7 +96,7 @@ export default function CartPage() {
                       </Link>
                       {item.color && (
                         <p className="mt-1 text-xs text-zinc-500 sm:text-sm">
-                          Culoare: <span className="font-medium">{item.color}</span>
+                          Culoare: <span className="font-medium">{getColorName(item.color)}</span>
                         </p>
                       )}
                     </div>

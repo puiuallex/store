@@ -14,6 +14,14 @@ export default function AddToCartButton({ produs, size = "md", selectedColor = n
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
 
+  // Funcție helper pentru a extrage numele culorii
+  const getColorName = (color) => {
+    if (!color) return null;
+    if (typeof color === "string") return color;
+    if (typeof color === "object" && color.nume) return color.nume;
+    return null;
+  };
+
   const handleClick = () => {
     // Dacă produsul este personalizat, deschide modalul
     if (produs.personalizat) {
@@ -23,9 +31,10 @@ export default function AddToCartButton({ produs, size = "md", selectedColor = n
 
     // Dacă selectedColor este pasat ca prop și nu e null, folosește-l direct
     if (selectedColor !== null) {
-      addItem(produs, 1, selectedColor);
+      const colorName = getColorName(selectedColor);
+      addItem(produs, 1, colorName);
       showToast(
-        `${produs.nume}${selectedColor ? ` (${selectedColor})` : ""} a fost adăugat în coș`,
+        `${produs.nume}${colorName ? ` (${colorName})` : ""} a fost adăugat în coș`,
         "success",
         [
           {
@@ -50,7 +59,7 @@ export default function AddToCartButton({ produs, size = "md", selectedColor = n
     }
 
     // Altfel, adaugă în coș normal (fără culoare sau cu culoarea unică)
-    const color = produs.culori && produs.culori.length === 1 ? produs.culori[0] : null;
+    const color = produs.culori && produs.culori.length === 1 ? getColorName(produs.culori[0]) : null;
     addItem(produs, 1, color);
     showToast(
       `${produs.nume} a fost adăugat în coș`,
@@ -71,9 +80,10 @@ export default function AddToCartButton({ produs, size = "md", selectedColor = n
   };
 
   const handleColorSelect = (color) => {
-    addItem(produs, 1, color);
+    const colorName = getColorName(color);
+    addItem(produs, 1, colorName);
     showToast(
-      `${produs.nume}${color ? ` (${color})` : ""} a fost adăugat în coș`,
+      `${produs.nume}${colorName ? ` (${colorName})` : ""} a fost adăugat în coș`,
       "success",
       [
         {

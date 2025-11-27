@@ -53,13 +53,31 @@ function ToastContainer({ toasts, removeToast }) {
 }
 
 function Toast({ toast, onRemove }) {
+  const isError = toast.type === "error";
   return (
     <div
-      className="pointer-events-auto flex flex-col gap-2 rounded-2xl border border-emerald-200 bg-white px-4 py-3 shadow-lg transition-all duration-300 animate-[slideIn_0.3s_ease-out] max-w-sm"
+      className={`pointer-events-auto flex flex-col gap-2 rounded-2xl border bg-white px-4 py-3 shadow-lg transition-all duration-300 animate-[slideIn_0.3s_ease-out] max-w-sm ${
+        isError ? "border-rose-200" : "border-emerald-200"
+      }`}
       role="alert"
     >
       <div className="flex items-center gap-3">
-        <div className="flex-shrink-0">
+      <div className="flex-shrink-0">
+        {isError ? (
+          <svg
+            className="h-5 w-5 text-rose-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        ) : (
           <svg
             className="h-5 w-5 text-emerald-600"
             fill="none"
@@ -73,17 +91,18 @@ function Toast({ toast, onRemove }) {
               d="M5 13l4 4L19 7"
             />
           </svg>
-        </div>
+        )}
+      </div>
         <p className="flex-1 text-sm font-medium text-zinc-900">{toast.message}</p>
-        <button
-          onClick={() => onRemove(toast.id)}
+      <button
+        onClick={() => onRemove(toast.id)}
           className="flex-shrink-0 text-zinc-400 hover:text-zinc-600"
-          aria-label="Închide"
-        >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        aria-label="Închide"
+      >
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
       </div>
       {toast.actions && (
         <div className="flex gap-2 pt-1">

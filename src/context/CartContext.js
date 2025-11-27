@@ -6,11 +6,24 @@ const CartContext = createContext(null);
 
 const STORAGE_KEY = "creating-layers-cart";
 
+// Funcție helper pentru a normaliza culoarea (extrage numele dacă e obiect)
+function normalizeColor(color) {
+  if (!color) return null;
+  if (typeof color === "string") return color;
+  if (typeof color === "object" && color.nume) return color.nume;
+  return null;
+}
+
 function loadCartFromStorage() {
   if (typeof window === "undefined") return [];
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    const items = stored ? JSON.parse(stored) : [];
+    // Normalizează culorile pentru itemele vechi din localStorage
+    return items.map((item) => ({
+      ...item,
+      color: normalizeColor(item.color),
+    }));
   } catch {
     return [];
   }
@@ -48,14 +61,17 @@ export function CartProvider({ children }) {
 
   const addItem = useCallback((product, quantity = 1, color = null) => {
     setItems((current) => {
+      // Normalizează culoarea (extrage numele dacă e obiect)
+      const normalizedColor = normalizeColor(color);
+      
       // Verifică dacă există deja același produs cu aceeași culoare
       const existing = current.find(
-        (item) => item.id === product.id && item.color === color
+        (item) => item.id === product.id && item.color === normalizedColor
       );
       
       if (existing) {
         return current.map((item) =>
-          item.id === product.id && item.color === color
+          item.id === product.id && item.color === normalizedColor
             ? { ...item, quantity: item.quantity + quantity }
             : item,
         );
@@ -69,26 +85,28 @@ export function CartProvider({ children }) {
           price: product.pret_oferta || product.pret,
           image: product.imagine,
           quantity,
-          color: color || null,
+          color: normalizedColor,
         },
       ];
     });
   }, []);
 
   const removeItem = useCallback((id, color = null) => {
+    const normalizedColor = normalizeColor(color);
     setItems((current) => 
-      current.filter((item) => !(item.id === id && item.color === color))
+      current.filter((item) => !(item.id === id && item.color === normalizedColor))
     );
   }, []);
 
   const updateQuantity = useCallback((id, quantity, color = null) => {
+    const normalizedColor = normalizeColor(color);
     if (quantity <= 0) {
-      removeItem(id, color);
+      removeItem(id, normalizedColor);
       return;
     }
     setItems((current) =>
       current.map((item) => 
-        (item.id === id && item.color === color) ? { ...item, quantity } : item
+        (item.id === id && item.color === normalizedColor) ? { ...item, quantity } : item
       ),
     );
   }, [removeItem]);

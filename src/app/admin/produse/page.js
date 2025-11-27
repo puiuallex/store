@@ -1,30 +1,24 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getAllProducts, deleteProduct } from "@/app/actions/products";
-import { checkAdminAccess } from "@/app/actions/admin";
+import { useToast } from "@/context/ToastContext";
 
 export default function AdminProductsPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const { showToast } = useToast();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [stockFilter, setStockFilter] = useState("all"); // all, inStock, outOfStock
 
   useEffect(() => {
     async function loadData() {
       if (!authLoading && user) {
-        const adminCheck = await checkAdminAccess(user.id);
-        setIsAdmin(adminCheck.isAdmin);
-
-        if (!adminCheck.isAdmin) {
-          router.push("/");
-          return;
-        }
-
         const result = await getAllProducts();
         if (result.data) {
           setProducts(result.data);
@@ -38,17 +32,34 @@ export default function AdminProductsPage() {
     loadData();
   }, [user, authLoading, router]);
 
-  const handleDelete = async (productId) => {
-    if (!confirm("Ești sigur că vrei să ștergi acest produs?")) {
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesSearch =
+        product.nume.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.descriere?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.categorie?.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesStock =
+        stockFilter === "all" ||
+        (stockFilter === "inStock" && product.stoc) ||
+        (stockFilter === "outOfStock" && !product.stoc);
+
+      return matchesSearch && matchesStock;
+    });
+  }, [products, searchQuery, stockFilter]);
+
+  const handleDelete = async (productId, productName) => {
+    if (!confirm(`Ești sigur că vrei să ștergi produsul "${productName}"?`)) {
       return;
     }
 
     const result = await deleteProduct(productId, user?.id || null);
 
     if (result.error) {
-      alert(result.error);
+      showToast(result.error, "error");
     } else {
       setProducts(products.filter((p) => p.id !== productId));
+      showToast(`Produsul "${productName}" a fost șters cu succes.`);
     }
   };
 
@@ -63,60 +74,97 @@ export default function AdminProductsPage() {
     );
   }
 
-  if (!isAdmin) {
-    return null;
-  }
-
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-zinc-900">Gestionare produse</h1>
-          <p className="mt-1 text-sm text-zinc-600">Gestionează produsele din catalog</p>
+          <h1 className="text-3xl font-bold text-zinc-900">Produse</h1>
+          <p className="mt-1 text-sm text-zinc-600">
+            {filteredProducts.length} {filteredProducts.length === 1 ? "produs" : "produse"}
+          </p>
         </div>
         <Link
           href="/admin/produse/nou"
-          className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500"
         >
-          + Adaugă produs
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Adaugă produs
         </Link>
       </div>
 
-      <div className="rounded-3xl border border-zinc-200 bg-white/80 shadow-[0_20px_60px_rgba(15,23,42,0.08)] overflow-hidden">
+      {/* Filtre și căutare */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex-1">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg className="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Caută produse..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="block w-full pl-10 pr-3 py-2.5 border border-zinc-300 rounded-lg bg-white text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+        <select
+          value={stockFilter}
+          onChange={(e) => setStockFilter(e.target.value)}
+          className="px-4 py-2.5 border border-zinc-300 rounded-lg bg-white text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+        >
+          <option value="all">Toate produsele</option>
+          <option value="inStock">În stoc</option>
+          <option value="outOfStock">Fără stoc</option>
+        </select>
+      </div>
+
+      {/* Tabel produse */}
+      <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-zinc-50 border-b border-zinc-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
                   Produs
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
                   Categorie
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
                   Preț
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-zinc-700">
                   Stoc
                 </th>
-                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-zinc-700">
+                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-zinc-700">
                   Acțiuni
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {products.length === 0 ? (
+              {filteredProducts.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="px-6 py-12 text-center text-zinc-500">
-                    Nu există produse.{" "}
-                    <Link href="/admin/produse/nou" className="font-semibold text-emerald-600 hover:text-emerald-500">
-                      Adaugă primul produs
-                    </Link>
+                    {searchQuery || stockFilter !== "all" ? (
+                      "Nu s-au găsit produse care să corespundă filtrelor."
+                    ) : (
+                      <>
+                        Nu există produse.{" "}
+                        <Link href="/admin/produse/nou" className="font-semibold text-emerald-600 hover:text-emerald-500">
+                          Adaugă primul produs
+                        </Link>
+                      </>
+                    )}
                   </td>
                 </tr>
               ) : (
-                products.map((product) => (
-                  <tr key={product.id} className="hover:bg-zinc-50">
+                filteredProducts.map((product) => (
+                  <tr key={product.id} className="hover:bg-zinc-50 transition">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-zinc-100 border border-zinc-200">
@@ -132,7 +180,7 @@ export default function AdminProductsPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-zinc-600">{product.categorie}</td>
+                    <td className="px-6 py-4 text-sm text-zinc-600">{product.categorie || "-"}</td>
                     <td className="px-6 py-4 text-sm font-semibold text-zinc-900">
                       {product.pret} lei
                     </td>
@@ -156,7 +204,7 @@ export default function AdminProductsPage() {
                           Editează
                         </Link>
                         <button
-                          onClick={() => handleDelete(product.id)}
+                          onClick={() => handleDelete(product.id, product.nume)}
                           className="rounded-lg border border-rose-300 bg-white px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-50"
                         >
                           Șterge
@@ -170,17 +218,6 @@ export default function AdminProductsPage() {
           </table>
         </div>
       </div>
-
-      <Link
-        href="/admin"
-        className="inline-flex items-center text-sm font-semibold text-emerald-600 hover:text-emerald-500"
-      >
-        ← Înapoi la panou
-      </Link>
     </div>
   );
 }
-
-
-
-
