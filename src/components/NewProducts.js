@@ -74,7 +74,7 @@ export default function NewProducts({ produse, excludeProductId = null }) {
                 className="flex-[0_0_50%] lg:flex-[0_0_calc(33.333%-21.33px)] min-w-0 flex"
               >
                 <div className="w-full">
-                  <ProductCard produs={produs} noShadow={true} />
+                  <ProductCard produs={produs} noShadow={true} hideNewBadge={true} />
                 </div>
               </div>
             ))}

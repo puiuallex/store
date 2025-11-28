@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AddToCartButton from "@/components/AddToCartButton";
 
-export default function ProductCard({ produs, noShadow = false }) {
+export default function ProductCard({ produs, noShadow = false, hideNewBadge = false }) {
   const {
     nume,
     descriere,
@@ -37,36 +37,36 @@ export default function ProductCard({ produs, noShadow = false }) {
             sizes="(min-width: 1024px) 33vw, 50vw"
             loading="lazy"
           />
-          <div className="absolute inset-x-2 top-2 lg:inset-x-4 lg:top-4 flex gap-1.5 lg:gap-2 text-[10px] lg:text-xs font-medium z-10 flex-wrap">
+          <div className="absolute inset-x-2 top-2 lg:inset-x-3 lg:top-3 flex gap-1.5 lg:gap-2 text-[10px] lg:text-xs font-medium z-10 flex-wrap">
             {inOferta && (
-              <span className="rounded-full bg-red-500/90 px-2 py-0.5 lg:px-3 lg:py-1 text-white shadow-sm font-bold">
+              <span className="rounded-full bg-red-500/90 px-2 py-0.5 lg:px-2.5 lg:py-1 text-white shadow-sm font-bold">
                 -{discountPercentage}%
               </span>
             )}
-            {noutate && (
-              <span className="rounded-full bg-white/90 px-2 py-0.5 lg:px-3 lg:py-1 text-zinc-800 shadow-sm hidden lg:inline-block">
+            {noutate && !hideNewBadge && (
+              <span className="rounded-full bg-white/90 px-2 py-0.5 lg:px-2.5 lg:py-1 text-zinc-800 shadow-sm hidden lg:inline-block">
                 Nou
               </span>
             )}
             {personalizat && (
-              <span className="rounded-full bg-purple-500/90 px-2 py-0.5 lg:px-3 lg:py-1 text-white shadow-sm hidden lg:inline-block">
+              <span className="rounded-full bg-purple-500/90 px-2 py-0.5 lg:px-2.5 lg:py-1 text-white shadow-sm hidden lg:inline-block">
                 Personalizat
               </span>
             )}
             {!stoc && (
-              <span className="rounded-full bg-amber-500/90 px-2 py-0.5 lg:px-3 lg:py-1 text-white shadow-sm text-[9px] lg:text-xs">
+              <span className="rounded-full bg-amber-500/90 px-2 py-0.5 lg:px-2.5 lg:py-1 text-white shadow-sm text-[9px] lg:text-xs">
                 Precomandă
               </span>
             )}
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-2 lg:gap-4 p-3 lg:p-6">
+        <div className="flex flex-1 flex-col gap-1.5 lg:gap-2.5 p-2.5 lg:p-4">
           <div>
-            <p className="text-sm lg:text-xl font-semibold text-zinc-900 transition group-hover:text-emerald-600 line-clamp-2">
+            <p className="text-sm lg:text-lg font-semibold text-zinc-900 transition group-hover:text-emerald-600 line-clamp-2">
               {nume}
             </p>
           </div>
-          <dl className="hidden lg:grid grid-cols-2 gap-4 text-sm text-zinc-600">
+          <dl className="hidden lg:grid grid-cols-2 gap-3 text-xs text-zinc-600">
             <div>
               <dt className="text-xs uppercase tracking-widest text-zinc-400">
                 Culori
@@ -90,18 +90,18 @@ export default function ProductCard({ produs, noShadow = false }) {
           </dl>
         </div>
       </Link>
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 lg:gap-3 border-t border-zinc-100 px-3 py-2.5 lg:px-6 lg:py-4">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-1.5 lg:gap-2 border-t border-zinc-100 px-2.5 py-2 lg:px-4 lg:py-3">
         <div className="flex flex-col min-w-0 flex-1">
           {inOferta ? (
             <>
-              <div className="flex items-center gap-1.5 lg:gap-2">
-                <span className="text-base lg:text-2xl font-semibold text-emerald-600">{pret_oferta} lei</span>
-                <span className="text-[10px] lg:text-sm font-medium text-zinc-400 line-through">{pret} lei</span>
+              <div className="flex items-center gap-1 lg:gap-1.5">
+                <span className="text-sm lg:text-xl font-semibold text-emerald-600">{pret_oferta} lei</span>
+                <span className="text-[9px] lg:text-xs font-medium text-zinc-400 line-through">{pret} lei</span>
               </div>
-              <span className="text-[9px] lg:text-xs font-semibold text-emerald-600 hidden lg:inline">În ofertă</span>
+              <span className="text-[8px] lg:text-[10px] font-semibold text-emerald-600 hidden lg:inline">În ofertă</span>
             </>
           ) : (
-            <span className="text-base lg:text-2xl font-semibold text-zinc-900">{pret} lei</span>
+            <span className="text-sm lg:text-xl font-semibold text-zinc-900">{pret} lei</span>
           )}
         </div>
         <div className="w-full lg:w-auto">
