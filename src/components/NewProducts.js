@@ -49,7 +49,7 @@ export default function NewProducts({ produse, excludeProductId = null }) {
   }
 
   return (
-    <section className="py-12 lg:py-16">
+    <section className="pt-6 lg:pt-8 pb-12 lg:pb-16">
       <div className="flex items-center justify-between mb-8 lg:mb-10">
         <div>
           <p className="text-xs uppercase tracking-[0.5em] text-emerald-600 mb-2">Noutăți</p>
@@ -66,7 +66,7 @@ export default function NewProducts({ produse, excludeProductId = null }) {
       </div>
       
       <div className="relative">
-        <div className="overflow-hidden" ref={emblaRef}>
+        <div className="overflow-hidden pb-2" ref={emblaRef}>
           <div className="flex gap-4 lg:gap-8">
             {newProducts.map((produs) => (
               <div

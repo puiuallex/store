@@ -48,7 +48,7 @@ export default function RelatedProducts({ produse, currentProductId, maxItems = 
   }
 
   return (
-    <section className="mt-16 space-y-6">
+    <section className="mt-16 space-y-6 pb-0">
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-zinc-900">
           Produse similare
@@ -59,7 +59,7 @@ export default function RelatedProducts({ produse, currentProductId, maxItems = 
       </div>
       
       <div className="relative">
-        <div className="overflow-hidden" ref={emblaRef}>
+        <div className="overflow-hidden pb-2" ref={emblaRef}>
           <div className="flex gap-4 lg:gap-8">
             {relatedProducts.map((produs) => (
               <div
