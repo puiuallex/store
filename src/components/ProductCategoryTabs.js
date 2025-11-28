@@ -56,41 +56,51 @@ export default function ProductCategoryTabs({ produse, categorii }) {
 
   return (
     <div className="space-y-6">
-      {/* Taburi pentru categorii */}
-      <div className="flex flex-wrap gap-2 border-b border-zinc-200 pb-4">
-        <button
-          onClick={() => handleCategoryChange("toate")}
-          className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-            selectedCategory === "toate"
-              ? "bg-emerald-600 text-white"
-              : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
-          }`}
-        >
-          Toate
-        </button>
-        <button
-          onClick={() => handleCategoryChange("personalizate")}
-          className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-            selectedCategory === "personalizate"
-              ? "bg-purple-600 text-white"
-              : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
-          }`}
-        >
-          Personalizate
-        </button>
-        {categorii.map((categorie) => (
-          <button
-            key={categorie.id}
-            onClick={() => handleCategoryChange(categorie.nume)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-              selectedCategory === categorie.nume
-                ? "bg-emerald-600 text-white"
-                : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
-            }`}
-          >
-            {categorie.nume}
-          </button>
-        ))}
+      {/* Header cu titlu și categorii */}
+      <div className="space-y-4 lg:space-y-0">
+        {/* Pe mobil: titlu separat, pe desktop: titlu și categorii pe aceeași linie */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+          <div className="space-y-3">
+            <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Catalog</p>
+            <h1 className="text-4xl font-semibold text-zinc-900">Produsele noastre</h1>
+          </div>
+          {/* Taburi pentru categorii - pe desktop lângă titlu */}
+          <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-wrap lg:overflow-visible lg:pb-0 scrollbar-hide lg:border-0 border-b border-zinc-200 lg:pt-0 pt-4">
+            <button
+              onClick={() => handleCategoryChange("toate")}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition whitespace-nowrap flex-shrink-0 ${
+                selectedCategory === "toate"
+                  ? "bg-emerald-600 text-white"
+                  : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+              }`}
+            >
+              Toate
+            </button>
+            <button
+              onClick={() => handleCategoryChange("personalizate")}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition whitespace-nowrap flex-shrink-0 ${
+                selectedCategory === "personalizate"
+                  ? "bg-purple-600 text-white"
+                  : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+              }`}
+            >
+              Personalizate
+            </button>
+            {categorii.map((categorie) => (
+              <button
+                key={categorie.id}
+                onClick={() => handleCategoryChange(categorie.nume)}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition whitespace-nowrap flex-shrink-0 ${
+                  selectedCategory === categorie.nume
+                    ? "bg-emerald-600 text-white"
+                    : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                }`}
+              >
+                {categorie.nume}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Grid cu produse filtrate */}
