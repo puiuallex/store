@@ -18,9 +18,9 @@ export default function ImageUpload({ value, onChange, label = "Imagine produs" 
       return;
     }
 
-    // Validare dimensiune (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setError("Imaginea este prea mare. Dimensiunea maximă este 5MB");
+    // Validare dimensiune (max 20MB)
+    if (file.size > 20 * 1024 * 1024) {
+      setError("Imaginea este prea mare. Dimensiunea maximă este 20MB");
       return;
     }
 
@@ -125,7 +125,7 @@ export default function ImageUpload({ value, onChange, label = "Imagine produs" 
               <p className="text-sm font-semibold text-zinc-700">
                 {uploading ? "Se încarcă..." : "Click pentru a selecta o imagine"}
               </p>
-              <p className="mt-1 text-xs text-zinc-500">JPG, PNG sau GIF (max 5MB)</p>
+              <p className="mt-1 text-xs text-zinc-500">JPG, PNG sau GIF (max 20MB)</p>
             </div>
           )}
           <input

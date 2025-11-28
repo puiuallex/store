@@ -20,10 +20,10 @@ export default function MultiImageUpload({ value = [], onChange, label = "Imagin
       return;
     }
 
-    // Validare dimensiune (max 5MB per fișier)
-    const oversizedFiles = files.filter((file) => file.size > 5 * 1024 * 1024);
+    // Validare dimensiune (max 20MB per fișier)
+    const oversizedFiles = files.filter((file) => file.size > 20 * 1024 * 1024);
     if (oversizedFiles.length > 0) {
-      setError("Unele imagini sunt prea mari. Dimensiunea maximă este 5MB per imagine");
+      setError("Unele imagini sunt prea mari. Dimensiunea maximă este 20MB per imagine");
       return;
     }
 
@@ -179,7 +179,7 @@ export default function MultiImageUpload({ value = [], onChange, label = "Imagin
               {uploading ? "Se încarcă..." : "Click pentru a adăuga imagini"}
             </p>
             <p className="mt-1 text-xs text-zinc-500">
-              JPG, PNG sau GIF (max 5MB per imagine). Prima imagine va fi cea principală.
+              JPG, PNG sau GIF (max 20MB per imagine). Prima imagine va fi cea principală.
             </p>
           </div>
           <input

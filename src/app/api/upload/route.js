@@ -21,11 +21,11 @@ export async function POST(request) {
       return NextResponse.json({ error: "Fișierul trebuie să fie o imagine" }, { status: 400 });
     }
 
-    // Verifică dimensiunea (max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    // Verifică dimensiunea (max 20MB)
+    const maxSize = 20 * 1024 * 1024; // 20MB
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: "Imaginea este prea mare. Dimensiunea maximă este 5MB" },
+        { error: "Imaginea este prea mare. Dimensiunea maximă este 20MB" },
         { status: 400 }
       );
     }
