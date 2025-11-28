@@ -60,7 +60,7 @@ export default async function Home() {
       <NewProducts produse={produse} />
 
       {/* Secțiunea De ce să cumperi de la noi */}
-      <WhyBuyFromUs />
+      {/* <WhyBuyFromUs /> */}
 
       {/* Secțiunea Newsletter */}
       <Newsletter />
