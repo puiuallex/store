@@ -6,9 +6,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import ProductCard from "./ProductCard";
 import Link from "next/link";
 
-export default function NewProducts({ produse }) {
-  // Filtrează doar produsele marcate ca "nou"
-  const newProducts = produse.filter((produs) => produs.noutate === true);
+export default function NewProducts({ produse, excludeProductId = null }) {
+  // Filtrează doar produsele marcate ca "nou" și exclude produsul curent dacă este specificat
+  const newProducts = produse.filter((produs) => 
+    produs.noutate === true && produs.id !== excludeProductId
+  );
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",

@@ -6,6 +6,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedProducts from "@/components/RelatedProducts";
 import ProductDescription from "@/components/ProductDescription";
 import ProductShare from "@/components/ProductShare";
+import NewProducts from "@/components/NewProducts";
 import { getProductById, getAllProducts } from "@/app/actions/products";
 
 // Revalidate la fiecare 5 minute pentru paginile de produse
@@ -60,7 +61,7 @@ export default async function ProductPage({ params }) {
     notFound();
   }
 
-  // Obține toate produsele pentru produse similare
+  // Obține toate produsele pentru produse similare și produse noi
   const { data: allProducts } = await getAllProducts();
   
   // Filtrează produsele din aceeași categorie pentru produse similare
@@ -197,6 +198,9 @@ export default async function ProductPage({ params }) {
           currentProductId={produs.id}
         />
       )}
+
+      {/* Produse noi */}
+      <NewProducts produse={allProducts || []} excludeProductId={produs.id} />
       </div>
     </>
   );

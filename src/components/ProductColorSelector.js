@@ -21,6 +21,11 @@ export default function ProductColorSelector({ produs }) {
   const firstColor = produs.culori && produs.culori.length === 1 ? produs.culori[0] : null;
   const [selectedColor, setSelectedColor] = useState(firstColor);
 
+  // Dacă produsul este personalizat, afișează doar butonul (fără selector de culori)
+  if (produs.personalizat) {
+    return <AddToCartButton produs={produs} size="lg" />;
+  }
+
   // Dacă nu are culori sau are doar o culoare, afișează doar butonul
   if (!produs.culori || produs.culori.length === 0) {
     return <AddToCartButton produs={produs} size="lg" />;
@@ -29,6 +34,10 @@ export default function ProductColorSelector({ produs }) {
   if (produs.culori.length === 1) {
     return <AddToCartButton produs={produs} size="lg" selectedColor={getColorName(selectedColor)} />;
   }
+
+  // Verifică dacă o culoare este selectată
+  const isColorSelected = selectedColor !== null && selectedColor !== undefined;
+  const selectedColorName = isColorSelected ? getColorName(selectedColor) : null;
 
   return (
     <div className="space-y-4">
@@ -65,10 +74,16 @@ export default function ProductColorSelector({ produs }) {
           })}
         </div>
       </div>
+      {!produs.personalizat && !isColorSelected && (
+        <p className="text-sm text-amber-600 font-medium">
+          Te rugăm să selectezi o culoare înainte de a adăuga produsul în coș.
+        </p>
+      )}
       <AddToCartButton 
         produs={produs} 
         size="lg" 
-        selectedColor={getColorName(selectedColor)}
+        selectedColor={selectedColorName}
+        disabled={!produs.personalizat && !isColorSelected}
       />
     </div>
   );

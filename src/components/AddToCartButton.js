@@ -23,6 +23,11 @@ export default function AddToCartButton({ produs, size = "md", selectedColor = n
   };
 
   const handleClick = () => {
+    // Dacă butonul este dezactivat, nu face nimic
+    if (disabled) {
+      return;
+    }
+
     // Dacă produsul este personalizat, deschide modalul
     if (produs.personalizat) {
       setIsModalOpen(true);
@@ -30,7 +35,7 @@ export default function AddToCartButton({ produs, size = "md", selectedColor = n
     }
 
     // Dacă selectedColor este pasat ca prop și nu e null, folosește-l direct
-    if (selectedColor !== null) {
+    if (selectedColor !== null && selectedColor !== undefined && selectedColor !== "") {
       const colorName = getColorName(selectedColor);
       addItem(produs, 1, colorName);
       showToast(
@@ -114,7 +119,12 @@ export default function AddToCartButton({ produs, size = "md", selectedColor = n
       <button
         type="button"
         onClick={handleClick}
-        className={`${baseClasses} ${sizes[size]} bg-emerald-600 hover:bg-emerald-500`}
+        disabled={disabled}
+        className={`${baseClasses} ${sizes[size]} ${
+          disabled
+            ? "bg-zinc-300 cursor-not-allowed"
+            : "bg-emerald-600 hover:bg-emerald-500"
+        }`}
       >
         {produs.personalizat ? "Comandă" : "Adaugă în coș"}
       </button>
