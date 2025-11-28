@@ -98,7 +98,7 @@ export default function SiteHeader() {
                     href="/autentificare"
                     className="rounded-full border border-white/20 px-4 py-2 text-sm font-semibold text-white transition hover:border-emerald-300 hover:text-emerald-300"
                   >
-                    Cont
+                    Intră în cont
                   </Link>
                 )}
               </>
@@ -226,7 +226,7 @@ export default function SiteHeader() {
                     className="block w-full rounded-full border border-white/20 px-4 py-2 text-center text-sm font-semibold text-white transition hover:border-emerald-300 hover:text-emerald-300"
                     onClick={() => setOpen(false)}
                   >
-                    Cont
+                    Intră în cont
                   </Link>
                 )}
               </div>
