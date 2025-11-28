@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function LivrarePage() {
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
-      <header className="space-y-3">
+    <div className="mx-auto max-w-4xl">
+      <header className="space-y-3 mb-4 lg:mb-6">
         <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Informații</p>
         <h1 className="text-3xl font-semibold text-zinc-900 lg:text-4xl">Livrare și retururi</h1>
       </header>

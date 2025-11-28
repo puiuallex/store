@@ -33,7 +33,7 @@ export default async function Home() {
       <section>
         {produse.length === 0 ? (
           <>
-            <header className="space-y-3 mb-8 lg:mb-10">
+            <header className="space-y-3 mb-4 lg:mb-6">
               <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Catalog</p>
               <h1 className="text-3xl font-semibold text-zinc-900 lg:text-4xl">Produsele noastre</h1>
             </header>

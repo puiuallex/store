@@ -27,8 +27,8 @@ const sections = [
 
 export default function TermsPage() {
   return (
-    <div className="space-y-6">
-      <header className="space-y-2">
+    <div>
+      <header className="space-y-2 mb-4 lg:mb-6">
         <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Legal</p>
         <h1 className="text-3xl font-semibold text-zinc-900">Termeni și condiții</h1>
         <p className="text-sm text-zinc-600">Ultima actualizare: {new Date().toLocaleDateString("ro-RO")}</p>

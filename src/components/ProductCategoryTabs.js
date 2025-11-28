@@ -55,7 +55,7 @@ export default function ProductCategoryTabs({ produse, categorii }) {
   }, [produse, selectedCategory]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Header cu titlu și categorii */}
       <div className="space-y-4 lg:space-y-0">
         {/* Pe mobil: titlu separat, pe desktop: titlu și categorii pe aceeași linie */}

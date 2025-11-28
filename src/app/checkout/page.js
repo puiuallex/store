@@ -102,8 +102,8 @@ export default function CheckoutPage() {
 
   return (
     <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
-      <div className="space-y-6">
-        <header className="space-y-2">
+      <div>
+        <header className="space-y-2 mb-4 lg:mb-6">
           <h1 className="text-3xl font-semibold text-zinc-900">Finalizează comanda</h1>
           <p className="text-zinc-600">Completează datele pentru livrare.</p>
         </header>

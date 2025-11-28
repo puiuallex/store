@@ -24,8 +24,8 @@ const valori = [
 
 export default function AboutPage() {
   return (
-    <div className="space-y-16">
-      <header className="space-y-4">
+    <div>
+      <header className="space-y-4 mb-4 lg:mb-6">
         <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Despre noi</p>
         <h1 className="text-3xl font-semibold text-zinc-900 lg:text-4xl">Creating Layers</h1>
         <p className="max-w-3xl text-lg text-zinc-600">

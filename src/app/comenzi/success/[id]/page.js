@@ -62,9 +62,9 @@ export default function OrderSuccessPage({ params }) {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-8">
+    <div className="mx-auto max-w-2xl">
       {/* Mesaj de success */}
-      <div className="text-center">
+      <div className="text-center mb-4 lg:mb-6">
         <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100">
           <svg
             className="h-12 w-12 text-emerald-600"

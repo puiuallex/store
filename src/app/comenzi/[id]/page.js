@@ -106,8 +106,8 @@ export default function OrderDetailsPage({ params }) {
   };
 
   return (
-    <div className="space-y-6">
-      <header className="space-y-2">
+    <div>
+      <header className="space-y-2 mb-4 lg:mb-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-semibold text-zinc-900">Detalii comandă</h1>

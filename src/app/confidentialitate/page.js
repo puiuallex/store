@@ -27,8 +27,8 @@ const policies = [
 
 export default function PrivacyPage() {
   return (
-    <div className="space-y-6">
-      <header className="space-y-2">
+    <div>
+      <header className="space-y-2 mb-4 lg:mb-6">
         <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Protecția datelor</p>
         <h1 className="text-3xl font-semibold text-zinc-900">Politica de confidențialitate</h1>
         <p className="text-sm text-zinc-600">Te rugăm să citești cu atenție această secțiune.</p>

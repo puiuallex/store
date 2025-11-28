@@ -71,8 +71,8 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <header className="space-y-2">
+    <div>
+      <header className="space-y-2 mb-4 lg:mb-6">
         <h1 className="text-3xl font-semibold text-zinc-900">Comenzile mele</h1>
         <p className="text-zinc-600">Vezi toate comenzile tale și statusul lor.</p>
       </header>
