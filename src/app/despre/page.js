@@ -27,7 +27,7 @@ export default function AboutPage() {
     <div className="space-y-16">
       <header className="space-y-4">
         <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Despre noi</p>
-        <h1 className="text-4xl font-semibold text-zinc-900 lg:text-5xl">Creating Layers</h1>
+        <h1 className="text-3xl font-semibold text-zinc-900 lg:text-4xl">Creating Layers</h1>
         <p className="max-w-3xl text-lg text-zinc-600">
           Creating Layers este un magazin online dedicat oferirii de produse de calitate superioară către clienții noștri din România. Ne străduim să oferim o experiență de cumpărare plăcută, transparentă și sigură.
         </p>

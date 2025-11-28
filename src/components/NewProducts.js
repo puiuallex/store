@@ -53,7 +53,7 @@ export default function NewProducts({ produse, excludeProductId = null }) {
       <div className="flex items-center justify-between mb-8 lg:mb-10">
         <div>
           <p className="text-xs uppercase tracking-[0.5em] text-emerald-600 mb-2">Noutăți</p>
-          <h2 className="text-3xl lg:text-4xl font-semibold text-zinc-900">
+          <h2 className="text-2xl lg:text-3xl font-semibold text-zinc-900">
             Produse noi
           </h2>
         </div>

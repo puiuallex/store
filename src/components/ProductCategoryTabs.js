@@ -62,7 +62,7 @@ export default function ProductCategoryTabs({ produse, categorii }) {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-6">
           <div className="space-y-3">
             <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Catalog</p>
-            <h1 className="text-4xl font-semibold text-zinc-900">Produsele noastre</h1>
+            <h1 className="text-3xl lg:text-4xl font-semibold text-zinc-900 whitespace-nowrap">Produsele noastre</h1>
           </div>
           {/* Taburi pentru categorii - pe desktop lângă titlu */}
           <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-wrap lg:overflow-visible lg:pb-0 scrollbar-hide lg:border-0 border-b border-zinc-200 lg:pt-0 pt-4">

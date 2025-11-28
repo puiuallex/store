@@ -80,7 +80,7 @@ export default function OrderSuccessPage({ params }) {
             />
           </svg>
         </div>
-        <h1 className="text-4xl font-semibold text-zinc-900">Mulțumim pentru comandă!</h1>
+        <h1 className="text-3xl font-semibold text-zinc-900 lg:text-4xl">Mulțumim pentru comandă!</h1>
         <p className="mt-3 text-lg text-zinc-600">
           Comanda ta a fost plasată cu succes și a fost primită.
         </p>

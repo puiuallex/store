@@ -10,7 +10,7 @@ export default function LivrarePage() {
     <div className="mx-auto max-w-4xl space-y-8">
       <header className="space-y-3">
         <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Informații</p>
-        <h1 className="text-4xl font-semibold text-zinc-900">Livrare și retururi</h1>
+        <h1 className="text-3xl font-semibold text-zinc-900 lg:text-4xl">Livrare și retururi</h1>
       </header>
 
       <div className="space-y-8">

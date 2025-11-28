@@ -14,7 +14,7 @@ export default function ContactPage() {
       <section className="space-y-6 rounded-3xl border border-zinc-200 bg-white/80 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
         <header className="space-y-2">
           <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Contact rapid</p>
-          <h1 className="text-3xl font-semibold text-zinc-900">Scrie-ne pe WhatsApp</h1>
+          <h1 className="text-2xl font-semibold text-zinc-900 lg:text-3xl">Scrie-ne pe WhatsApp</h1>
           <p className="text-zinc-600">
             Răspundem rapid la mesaje și suntem disponibili pentru întrebări, comenzi personalizate sau asistență.
           </p>

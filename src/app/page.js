@@ -18,7 +18,7 @@ export default async function Home() {
       <div className="space-y-10">
         <header className="space-y-3">
           <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Catalog</p>
-          <h1 className="text-4xl font-semibold text-zinc-900">Produsele noastre</h1>
+          <h1 className="text-3xl font-semibold text-zinc-900 lg:text-4xl">Produsele noastre</h1>
         </header>
         <div className="rounded-3xl border border-rose-200 bg-rose-50 p-8 text-center">
           <p className="text-rose-800">{productsError || "Nu s-au putut încărca produsele."}</p>
@@ -35,7 +35,7 @@ export default async function Home() {
           <>
             <header className="space-y-3 mb-8 lg:mb-10">
               <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Catalog</p>
-              <h1 className="text-4xl font-semibold text-zinc-900">Produsele noastre</h1>
+              <h1 className="text-3xl font-semibold text-zinc-900 lg:text-4xl">Produsele noastre</h1>
             </header>
             <div className="rounded-3xl border border-zinc-200 bg-white/80 p-12 text-center">
               <p className="text-lg font-semibold text-zinc-900">Nu există produse disponibile</p>
