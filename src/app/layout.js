@@ -4,6 +4,7 @@ import ConditionalLayout from "@/components/ConditionalLayout";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { ToastProvider } from "@/context/ToastContext";
+import { CategoriesProvider } from "@/context/CategoriesContext";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
@@ -62,9 +63,11 @@ export default function RootLayout({ children }) {
         <GoogleAnalytics />
         <AuthProvider>
           <CartProvider>
-            <ToastProvider>
-              <ConditionalLayout>{children}</ConditionalLayout>
-            </ToastProvider>
+            <CategoriesProvider>
+              <ToastProvider>
+                <ConditionalLayout>{children}</ConditionalLayout>
+              </ToastProvider>
+            </CategoriesProvider>
           </CartProvider>
         </AuthProvider>
       </body>
