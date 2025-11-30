@@ -1,16 +1,45 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import ProductCard from "./ProductCard";
 import Link from "next/link";
 
-export default function NewProducts({ produse, excludeProductId = null }) {
-  // Filtrează doar produsele marcate ca "nou" și exclude produsul curent dacă este specificat
-  const newProducts = produse.filter((produs) => 
-    produs.noutate === true && produs.id !== excludeProductId
-  );
+export default function RecommendedProducts({ produse, maxItems = 6 }) {
+  // Selectează produse recomandate: preferă produsele cu oferte, apoi cele noi, apoi restul
+  // Folosim sortare deterministă pentru a evita erorile de hydration
+  const recommendedProducts = useMemo(() => {
+    if (!produse || produse.length === 0) return [];
+    
+    // Creează o copie pentru a nu modifica array-ul original
+    const sorted = [...produse];
+    
+    // Sortare deterministă: produse cu oferte primele, apoi produse noi, apoi restul
+    // Folosim ID-ul pentru a asigura o ordine consistentă
+    sorted.sort((a, b) => {
+      const aHasOffer = a.pret_oferta && a.pret_oferta < a.pret;
+      const bHasOffer = b.pret_oferta && b.pret_oferta < b.pret;
+      const aIsNew = a.noutate === true;
+      const bIsNew = b.noutate === true;
+      
+      // Produse cu oferte primele
+      if (aHasOffer && !bHasOffer) return -1;
+      if (!aHasOffer && bHasOffer) return 1;
+      
+      // Apoi produse noi
+      if (aIsNew && !bIsNew) return -1;
+      if (!aIsNew && bIsNew) return 1;
+      
+      // Pentru produsele cu același status, sortăm după ID pentru consistență
+      // Astfel serverul și clientul vor genera aceeași ordine
+      if (a.id < b.id) return -1;
+      if (a.id > b.id) return 1;
+      return 0;
+    });
+    
+    return sorted.slice(0, maxItems);
+  }, [produse, maxItems]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
@@ -44,7 +73,7 @@ export default function NewProducts({ produse, excludeProductId = null }) {
     emblaApi.on("select", onSelect);
   }, [emblaApi, onSelect]);
 
-  if (newProducts.length === 0) {
+  if (recommendedProducts.length === 0) {
     return null;
   }
 
@@ -52,13 +81,13 @@ export default function NewProducts({ produse, excludeProductId = null }) {
     <section className="pt-6 lg:pt-8 pb-6 lg:pb-8">
       <div className="flex items-center justify-between mb-4 lg:mb-6">
         <div>
-          <p className="text-xs uppercase tracking-[0.5em] text-emerald-600 mb-2">Noutăți</p>
+          <p className="text-xs uppercase tracking-[0.5em] text-emerald-600 mb-2">Recomandări</p>
           <h2 className="text-2xl lg:text-3xl font-semibold text-zinc-900">
-            Produse noi
+            Produse care te-ar putea interesa
           </h2>
         </div>
         <Link
-          href="/?categorie=toate"
+          href="/"
           className="hidden text-sm font-semibold text-emerald-600 hover:text-emerald-500 transition lg:inline-block"
         >
           Vezi toate →
@@ -68,13 +97,13 @@ export default function NewProducts({ produse, excludeProductId = null }) {
       <div className="relative">
         <div className="overflow-hidden pb-2" ref={emblaRef}>
           <div className="flex gap-4 lg:gap-8">
-            {newProducts.map((produs) => (
+            {recommendedProducts.map((produs) => (
               <div
                 key={produs.id}
                 className="flex-[0_0_50%] lg:flex-[0_0_calc(33.333%-21.33px)] min-w-0 flex"
               >
                 <div className="w-full">
-                  <ProductCard produs={produs} noShadow={true} hideNewBadge={true} />
+                  <ProductCard produs={produs} noShadow={true} />
                 </div>
               </div>
             ))}
@@ -82,12 +111,12 @@ export default function NewProducts({ produse, excludeProductId = null }) {
         </div>
 
         {/* Butoane de navigare */}
-        {newProducts.length > 2 && (
+        {recommendedProducts.length > 2 && (
           <>
             <button
               onClick={scrollPrev}
               disabled={prevBtnDisabled}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-4 z-10 flex items-center justify-center h-10 w-10 lg:h-12 lg:w-12 rounded-full bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-4 z-10 flex items-center justify-center h-10 w-10 lg:h-12 lg:w-12 rounded-full bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-sm"
               aria-label="Produs anterior"
             >
               <ChevronLeftIcon className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -95,7 +124,7 @@ export default function NewProducts({ produse, excludeProductId = null }) {
             <button
               onClick={scrollNext}
               disabled={nextBtnDisabled}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-4 z-10 flex items-center justify-center h-10 w-10 lg:h-12 lg:w-12 rounded-full bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-4 z-10 flex items-center justify-center h-10 w-10 lg:h-12 lg:w-12 rounded-full bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-sm"
               aria-label="Produs următor"
             >
               <ChevronRightIcon className="h-5 w-5 lg:h-6 lg:w-6" />
@@ -106,7 +135,7 @@ export default function NewProducts({ produse, excludeProductId = null }) {
 
       <div className="mt-6 text-center lg:hidden">
         <Link
-          href="/?categorie=toate"
+          href="/"
           className="inline-block text-sm font-semibold text-emerald-600 hover:text-emerald-500 transition"
         >
           Vezi toate produsele →

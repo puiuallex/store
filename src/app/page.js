@@ -4,6 +4,7 @@ import { getAllCategories } from "@/app/actions/categories";
 import ProductCategoryTabs from "@/components/ProductCategoryTabs";
 import WhyBuyFromUs from "@/components/WhyBuyFromUs";
 import NewProducts from "@/components/NewProducts";
+import RecommendedProducts from "@/components/RecommendedProducts";
 import Newsletter from "@/components/Newsletter";
 
 // Revalidate la fiecare 60 de secunde pentru pagina home
@@ -60,6 +61,9 @@ export default async function Home() {
 
       {/* Secțiunea Produse noi */}
       <NewProducts produse={produse} />
+
+      {/* Secțiunea Produse care te-ar putea interesa */}
+      <RecommendedProducts produse={produse} />
 
       {/* Secțiunea De ce să cumperi de la noi */}
       {/* <WhyBuyFromUs /> */}
