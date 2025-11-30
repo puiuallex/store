@@ -97,48 +97,67 @@ export default function OrdersPage() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {orders.map((order) => (
             <Link
               key={order.id}
               href={`/comenzi/${order.id}`}
-              className="block rounded-3xl border border-zinc-200 bg-white/80 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] transition hover:border-emerald-300 hover:shadow-[0_20px_60px_rgba(16,185,129,0.12)]"
+              className="block rounded-2xl sm:rounded-3xl border border-zinc-200 bg-white/80 p-4 sm:p-6 shadow-sm sm:shadow-[0_20px_60px_rgba(15,23,42,0.08)] transition hover:border-emerald-300 hover:shadow-md sm:hover:shadow-[0_20px_60px_rgba(16,185,129,0.12)]"
             >
-              <div className="flex items-start justify-between">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <p className="text-lg font-semibold text-zinc-900">
+              {/* Layout mobil: vertical, desktop: orizontal */}
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-0">
+                <div className="flex-1 space-y-2 min-w-0">
+                  {/* Header cu număr comandă și status */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                    <p className="text-base sm:text-lg font-semibold text-zinc-900">
                       Comandă #{order.id.slice(0, 8).toUpperCase()}
                     </p>
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        order.status === "nouă"
-                          ? "bg-amber-100 text-amber-800"
-                          : order.status === "confirmată"
-                            ? "bg-blue-100 text-blue-800"
-                            : order.status === "expediată"
-                              ? "bg-emerald-100 text-emerald-800"
-                              : "bg-zinc-100 text-zinc-800"
-                      }`}
-                    >
-                      {order.status}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-zinc-500">Status:</span>
+                      <span
+                        className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold w-fit ${
+                          order.status === "nouă"
+                            ? "bg-amber-100 text-amber-800"
+                            : order.status === "confirmată"
+                              ? "bg-blue-100 text-blue-800"
+                              : order.status === "expediată"
+                                ? "bg-emerald-100 text-emerald-800"
+                                : "bg-zinc-100 text-zinc-800"
+                        }`}
+                      >
+                        {order.status}
+                      </span>
+                    </div>
                   </div>
+                  
+                  {/* Data */}
                   <p className="text-sm text-zinc-600">
-                    Plasată pe {new Date(order.created_at).toLocaleDateString("ro-RO")}
+                    Plasată pe {new Date(order.created_at).toLocaleDateString("ro-RO", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric"
+                    })}
                   </p>
+                  
+                  {/* Observații */}
                   {order.notes && (
-                    <p className="text-sm text-zinc-500">Observații: {order.notes}</p>
+                    <p className="text-sm text-zinc-500 line-clamp-2">Observații: {order.notes}</p>
                   )}
                 </div>
-                <div className="text-right">
-                  <p className="text-lg font-semibold text-zinc-900">
-                    {order.total ? `${order.total} lei` : "Calcul la confirmare"}
+                
+                {/* Preț și detalii - pe mobil jos, pe desktop dreapta */}
+                <div className="flex items-center justify-between sm:flex-col sm:items-end sm:justify-start sm:text-right pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100">
+                  <div className="sm:space-y-1">
+                    <p className="text-lg font-bold text-zinc-900">
+                      {order.total ? `${order.total.toFixed(2)} lei` : "Calcul la confirmare"}
+                    </p>
+                    <p className="text-xs text-zinc-500 hidden sm:block">
+                      {order.payment_method === "ramburs" ? "Plată ramburs" : "Plată cu cardul"}
+                    </p>
+                  </div>
+                  <p className="text-xs font-semibold text-emerald-600 sm:mt-2">
+                    Detalii →
                   </p>
-                  <p className="text-xs text-zinc-500">
-                    {order.payment_method === "ramburs" ? "Plată ramburs" : "Plată cu cardul"}
-                  </p>
-                  <p className="mt-2 text-xs font-semibold text-emerald-600">Vezi detalii →</p>
                 </div>
               </div>
             </Link>
