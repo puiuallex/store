@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { 
   Bars3Icon, 
   UserCircleIcon, 
@@ -49,7 +50,8 @@ function getCategoryIcon(categoryName) {
   return TagIcon;
 }
 
-export default function SiteHeader() {
+// Component intern care folosește useSearchParams
+function SiteHeaderContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
@@ -396,6 +398,28 @@ export default function SiteHeader() {
       </div>
     </>
     </>
+  );
+}
+
+// Component wrapper cu Suspense pentru useSearchParams
+export default function SiteHeader() {
+  return (
+    <Suspense fallback={
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-zinc-950/80 backdrop-blur">
+        <div className="mx-auto max-w-6xl px-6 py-4 lg:px-8">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight">
+              creatinglayers.ro
+            </Link>
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 animate-pulse rounded-full bg-white/10"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+    }>
+      <SiteHeaderContent />
+    </Suspense>
   );
 }
 
