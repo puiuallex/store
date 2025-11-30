@@ -131,7 +131,7 @@ export default function OrderSuccessPage({ params }) {
       </div>
 
       {/* Informații importante */}
-      <div className="rounded-2xl bg-blue-50 border border-blue-200 p-6">
+      <div className="mt-6 lg:mt-8 rounded-2xl bg-blue-50 border border-blue-200 p-6">
         <h3 className="text-sm font-semibold text-blue-900 mb-2">Ce urmează?</h3>
         <ul className="space-y-2 text-sm text-blue-800">
           <li className="flex items-start gap-2">
@@ -150,7 +150,7 @@ export default function OrderSuccessPage({ params }) {
       </div>
 
       {/* Acțiuni */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+      <div className="mt-6 lg:mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
         <Link
           href={`/comenzi/${order.id}`}
           className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
@@ -166,7 +166,7 @@ export default function OrderSuccessPage({ params }) {
       </div>
 
       {user && (
-        <div className="text-center">
+        <div className="mt-6 text-center">
           <Link
             href="/comenzi"
             className="text-sm font-semibold text-emerald-600 hover:text-emerald-500"

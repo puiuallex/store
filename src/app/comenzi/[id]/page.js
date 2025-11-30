@@ -3,8 +3,10 @@
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { getOrderById } from "@/app/actions/orders";
+import { getProductById } from "@/app/actions/products";
 
 export default function OrderDetailsPage({ params }) {
   const { user, loading: authLoading } = useAuth();
@@ -13,6 +15,7 @@ export default function OrderDetailsPage({ params }) {
   const [error, setError] = useState(null);
   const router = useRouter();
   const [orderId, setOrderId] = useState(null);
+  const [productImages, setProductImages] = useState({});
 
   // Funcție helper pentru a extrage numele culorii
   const getColorName = (color) => {
@@ -45,6 +48,41 @@ export default function OrderDetailsPage({ params }) {
           setOrder(null);
         } else {
           setOrder(result.data);
+          
+          // Obține imaginile produselor - folosește product_image din items dacă există, altfel fetch din product_id
+          if (result.data?.items) {
+            const images = {};
+            await Promise.all(
+              result.data.items.map(async (item) => {
+                if (item.product_id) {
+                  // Verifică mai întâi dacă există product_image în item (pentru comenzile noi)
+                  if (item.product_image) {
+                    images[item.product_id] = item.product_image;
+                  } else {
+                    // Pentru comenzile vechi, fetch din product_id
+                    try {
+                      const productResult = await getProductById(item.product_id);
+                      if (productResult.data && !productResult.error) {
+                        // Verifică mai întâi imagini (array), apoi imagine (string)
+                        let imageUrl = null;
+                        if (productResult.data.imagini && Array.isArray(productResult.data.imagini) && productResult.data.imagini.length > 0) {
+                          imageUrl = productResult.data.imagini[0];
+                        } else if (productResult.data.imagine) {
+                          imageUrl = productResult.data.imagine;
+                        }
+                        if (imageUrl) {
+                          images[item.product_id] = imageUrl;
+                        }
+                      }
+                    } catch (err) {
+                      console.error(`Eroare la obținerea imaginii pentru produs ${item.product_id}:`, err);
+                    }
+                  }
+                }
+              })
+            );
+            setProductImages(images);
+          }
         }
       } catch (err) {
         console.error("Eroare:", err);
@@ -187,27 +225,101 @@ export default function OrderDetailsPage({ params }) {
         {/* Produse și total */}
         <div className="space-y-6">
           <div className="rounded-3xl border border-zinc-200 bg-white/80 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-            <h2 className="text-xl font-semibold text-zinc-900 mb-4">Produse comandate</h2>
+            <h2 className="text-xl font-semibold text-zinc-900 mb-6">Produse comandate</h2>
             <div className="space-y-4">
-              {order.items.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-start justify-between border-b border-zinc-100 pb-4 last:border-0 last:pb-0"
-                >
-                  <div className="flex-1">
-                    <p className="font-medium text-zinc-900">{item.product_name}</p>
-                    <p className="text-sm text-zinc-600">
-                      Cantitate: {item.quantity} × {item.price.toFixed(2)} lei
-                      {item.color && (
-                        <span className="ml-2">• Culoare: <span className="font-medium">{getColorName(item.color)}</span></span>
+              {order.items.map((item, index) => {
+                const productImage = item.product_id ? productImages[item.product_id] : null;
+                const hasImage = productImage && productImage.trim() !== "";
+                return (
+                  <div
+                    key={index}
+                    className="group rounded-2xl border border-zinc-200 bg-white p-4 transition hover:border-zinc-300 hover:shadow-md"
+                  >
+                    {/* Layout mobil: vertical, desktop: orizontal */}
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      {/* Imagine produs */}
+                      {item.product_id ? (
+                        <Link 
+                          href={`/produse/${item.product_id}`}
+                          className="relative aspect-square w-full sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded-xl bg-zinc-100 transition-transform group-hover:scale-[1.02]"
+                        >
+                          {hasImage ? (
+                            <Image
+                              src={productImage}
+                              alt={item.product_name}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 100vw, 96px"
+                              onError={(e) => {
+                                console.error("Eroare la încărcarea imaginii:", productImage);
+                                e.target.style.display = "none";
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-zinc-400">
+                              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </div>
+                          )}
+                        </Link>
+                      ) : (
+                        <div className="relative aspect-square w-full sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded-xl bg-zinc-100">
+                          <div className="w-full h-full flex items-center justify-center text-zinc-400">
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                        </div>
                       )}
-                    </p>
+                      
+                      {/* Conținut */}
+                      <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          {/* Titlu produs */}
+                          {item.product_id ? (
+                            <Link 
+                              href={`/produse/${item.product_id}`}
+                              className="block group/title mb-2"
+                            >
+                              <h3 className="text-base font-semibold text-zinc-900 group-hover/title:text-emerald-600 transition line-clamp-2">
+                                {item.product_name}
+                              </h3>
+                            </Link>
+                          ) : (
+                            <h3 className="text-base font-semibold text-zinc-900 mb-2 line-clamp-2">
+                              {item.product_name}
+                            </h3>
+                          )}
+                          
+                          {/* Detalii produs */}
+                          <div className="space-y-1.5 text-sm text-zinc-600">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-zinc-400">Cantitate:</span>
+                              <span className="font-medium text-zinc-900">{item.quantity}</span>
+                              <span className="text-zinc-400">×</span>
+                              <span className="font-medium text-zinc-900">{item.price.toFixed(2)} lei</span>
+                            </div>
+                            {item.color && (
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="text-zinc-400">Culoare:</span>
+                                <span className="font-medium text-zinc-900">{getColorName(item.color)}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Preț total */}
+                        <div className="flex-shrink-0 sm:text-right">
+                          <p className="text-lg font-bold text-zinc-900">
+                            {(item.quantity * item.price).toFixed(2)} lei
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <p className="font-semibold text-zinc-900">
-                    {(item.quantity * item.price).toFixed(2)} lei
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
