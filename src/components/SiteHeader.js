@@ -11,6 +11,7 @@ import {
   XMarkIcon, 
   ArrowRightOnRectangleIcon,
   HomeIcon,
+  ShoppingBagIcon,
   TruckIcon,
   PhoneIcon,
   SparklesIcon,
@@ -27,7 +28,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCategories } from "@/context/CategoriesContext";
 
 const links = [
-  { href: "/", label: "Acasă", icon: HomeIcon },
+  { href: "/", label: "Magazin", icon: ShoppingBagIcon },
   { href: "/livrare", label: "Livrare și retururi", icon: TruckIcon },
   { href: "/contact", label: "Contact", icon: PhoneIcon },
 ];

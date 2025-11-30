@@ -48,14 +48,14 @@ export default function RelatedProducts({ produse, currentProductId, maxItems = 
   }
 
   return (
-    <section className="mt-16 space-y-6 pb-0">
-      <div>
-        <h2 className="text-2xl lg:text-3xl font-semibold text-zinc-900">
-          Produse similare
-        </h2>
-        <p className="mt-2 text-zinc-600">
-          Descoperă alte produse care te-ar putea interesa
-        </p>
+    <section className="pt-6 lg:pt-8 pb-0">
+      <div className="flex items-center justify-between mb-4 lg:mb-6">
+        <div>
+          <p className="text-xs uppercase tracking-[0.5em] text-emerald-600 mb-2">Recomandate</p>
+          <h2 className="text-2xl lg:text-3xl font-semibold text-zinc-900">
+            Produse similare
+          </h2>
+        </div>
       </div>
       
       <div className="relative">
