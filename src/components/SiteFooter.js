@@ -9,7 +9,7 @@ const footerLinks = [
 export default function SiteFooter() {
   return (
     <footer className="border-t border-zinc-200 bg-white/80">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-10 lg:flex-row lg:justify-between lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6 py-10 lg:flex-row lg:justify-between lg:px-8 xl:px-12">
         <div className="space-y-3">
           <p className="text-lg font-semibold text-zinc-900 font-[family-name:var(--font-orbitron)] tracking-tight">creatinglayers.ro</p>
           <p className="text-sm text-zinc-500">

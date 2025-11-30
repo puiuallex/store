@@ -19,7 +19,7 @@ export default function ConditionalLayout({ children }) {
       <div className="flex min-h-screen flex-col bg-gradient-to-b from-zinc-100 via-white to-zinc-100">
         <ShippingBanner />
         <SiteHeader />
-        <main className="mx-auto w-full max-w-6xl flex-1 px-6 pb-16 pt-12 lg:px-8">
+        <main className="mx-auto w-full max-w-7xl flex-1 px-6 pb-16 pt-12 lg:px-8 xl:px-12">
           {children}
         </main>
         <SiteFooter />

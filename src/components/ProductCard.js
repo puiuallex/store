@@ -28,7 +28,7 @@ export default function ProductCard({ produs, noShadow = false, hideNewBadge = f
         : "shadow-sm lg:shadow-[0_20px_60px_rgba(15,23,42,0.08)] hover:shadow-[0_25px_70px_rgba(15,23,42,0.14)]"
     }`}>
       <Link href={`/produse/${id}`} className="group flex flex-1 flex-col">
-        <div className="relative aspect-square w-full overflow-hidden bg-zinc-100">
+        <div className="relative aspect-square lg:aspect-[4/3] w-full overflow-hidden bg-zinc-100">
           <Image
             src={imagine}
             alt={nume}
@@ -60,13 +60,13 @@ export default function ProductCard({ produs, noShadow = false, hideNewBadge = f
             )}
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-1.5 lg:gap-2.5 p-2.5 lg:p-4">
+        <div className="flex flex-1 flex-col gap-1.5 lg:gap-2 p-2.5 lg:p-3">
           <div>
-            <p className="text-sm lg:text-lg font-semibold text-zinc-900 transition group-hover:text-emerald-600 line-clamp-2">
+            <p className="text-sm lg:text-base font-semibold text-zinc-900 transition group-hover:text-emerald-600 line-clamp-2">
               {nume}
             </p>
           </div>
-          <dl className="hidden lg:grid grid-cols-2 gap-3 text-xs text-zinc-600">
+          <dl className="hidden lg:grid grid-cols-2 gap-2 text-xs text-zinc-600">
             <div>
               <dt className="text-xs uppercase tracking-widest text-zinc-400">
                 Culori
@@ -90,18 +90,18 @@ export default function ProductCard({ produs, noShadow = false, hideNewBadge = f
           </dl>
         </div>
       </Link>
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-1.5 lg:gap-2 border-t border-zinc-100 px-2.5 py-2 lg:px-4 lg:py-3">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-1.5 lg:gap-2 border-t border-zinc-100 px-2.5 py-2 lg:px-3 lg:py-2.5">
         <div className="flex flex-col min-w-0 flex-1">
           {inOferta ? (
             <>
               <div className="flex items-center gap-1 lg:gap-1.5">
-                <span className="text-sm lg:text-xl font-semibold text-emerald-600">{pret_oferta} lei</span>
+                <span className="text-sm lg:text-lg font-semibold text-emerald-600">{pret_oferta} lei</span>
                 <span className="text-[9px] lg:text-xs font-medium text-zinc-400 line-through">{pret} lei</span>
               </div>
               <span className="text-[8px] lg:text-[10px] font-semibold text-emerald-600 hidden lg:inline">În ofertă</span>
             </>
           ) : (
-            <span className="text-sm lg:text-xl font-semibold text-zinc-900">{pret} lei</span>
+            <span className="text-sm lg:text-lg font-semibold text-zinc-900">{pret} lei</span>
           )}
         </div>
         <div className="w-full lg:w-auto">

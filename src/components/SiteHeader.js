@@ -77,7 +77,7 @@ function SiteHeaderContent() {
   return (
     <>
     <header className="sticky top-0 z-20 border-b border-white/10 bg-zinc-950/80 backdrop-blur">
-      <div className="mx-auto max-w-6xl px-6 py-4 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 py-4 lg:px-8 xl:px-12">
         {/* Desktop layout */}
         <div className="hidden lg:flex items-center justify-between">
           <Link href="/" className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight">
@@ -406,7 +406,7 @@ export default function SiteHeader() {
   return (
     <Suspense fallback={
       <header className="sticky top-0 z-20 border-b border-white/10 bg-zinc-950/80 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-6 py-4 lg:px-8">
+        <div className="mx-auto max-w-7xl px-6 py-4 lg:px-8 xl:px-12">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight">
               creatinglayers.ro

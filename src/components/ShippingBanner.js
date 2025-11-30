@@ -1,7 +1,7 @@
 export default function ShippingBanner() {
   return (
     <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-center px-6 py-2.5 text-center text-xs font-medium sm:text-sm lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-center px-6 py-2.5 text-center text-xs font-medium sm:text-sm lg:px-8 xl:px-12">
         <svg
           className="mr-2 h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5"
           fill="none"
