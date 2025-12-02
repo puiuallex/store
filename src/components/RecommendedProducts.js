@@ -145,3 +145,4 @@ export default function RecommendedProducts({ produse, maxItems = 6 }) {
   );
 }
 
+

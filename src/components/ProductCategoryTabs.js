@@ -52,17 +52,22 @@ export default function ProductCategoryTabs({ produse, categorii }) {
   }, [searchParams]);
 
   // Funcție pentru schimbarea categoriei și actualizarea URL-ului
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = (category, e) => {
+    // Previne comportamentul default al link-ului pentru a evita dublă navigare
+    if (e) {
+      e.preventDefault();
+    }
+    
     setSelectedCategory(category);
     if (category === "toate") {
       // Șterge parametrul din URL dacă e "toate"
-      router.push("/", { scroll: false });
+      router.replace("/", { scroll: false });
     } else if (category === "personalizate") {
       // Tab special pentru produse personalizate
-      router.push(`/?categorie=personalizate`, { scroll: false });
+      router.replace(`/?categorie=personalizate`, { scroll: false });
     } else {
       // Adaugă parametrul în URL
-      router.push(`/?categorie=${encodeURIComponent(category)}`, { scroll: false });
+      router.replace(`/?categorie=${encodeURIComponent(category)}`, { scroll: false });
     }
   };
 
@@ -101,28 +106,28 @@ export default function ProductCategoryTabs({ produse, categorii }) {
             <nav className="space-y-1">
               <Link
                 href="/"
-                onClick={() => handleCategoryChange("toate")}
-                className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                onClick={(e) => handleCategoryChange("toate", e)}
+                className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-[colors,border-color] duration-150 ease-in-out border ${
                   selectedCategory === "toate"
-                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                    : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900"
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                    : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 border-transparent"
                 }`}
               >
-                <HomeIcon className={`h-5 w-5 flex-shrink-0 ${
+                <HomeIcon className={`h-5 w-5 flex-shrink-0 transition-colors duration-150 ease-in-out ${
                   selectedCategory === "toate" ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
                 }`} />
                 Toate produsele
               </Link>
               <Link
                 href="/?categorie=personalizate"
-                onClick={() => handleCategoryChange("personalizate")}
-                className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                onClick={(e) => handleCategoryChange("personalizate", e)}
+                className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-[colors,border-color] duration-150 ease-in-out border ${
                   selectedCategory === "personalizate"
-                    ? "bg-purple-50 text-purple-700 border border-purple-200"
-                    : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900"
+                    ? "bg-purple-50 text-purple-700 border-purple-200"
+                    : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 border-transparent"
                 }`}
               >
-                <SparklesIcon className={`h-5 w-5 flex-shrink-0 ${
+                <SparklesIcon className={`h-5 w-5 flex-shrink-0 transition-colors duration-150 ease-in-out ${
                   selectedCategory === "personalizate" ? "text-purple-600" : "text-zinc-400 group-hover:text-zinc-600"
                 }`} />
                 Personalizate
@@ -133,14 +138,14 @@ export default function ProductCategoryTabs({ produse, categorii }) {
                   <Link
                     key={categorie.id}
                     href={`/?categorie=${encodeURIComponent(categorie.nume)}`}
-                    onClick={() => handleCategoryChange(categorie.nume)}
-                    className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                    onClick={(e) => handleCategoryChange(categorie.nume, e)}
+                    className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-[colors,border-color] duration-150 ease-in-out border ${
                       selectedCategory === categorie.nume
-                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                        : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                        : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 border-transparent"
                     }`}
                   >
-                    <CategoryIcon className={`h-5 w-5 flex-shrink-0 ${
+                    <CategoryIcon className={`h-5 w-5 flex-shrink-0 transition-colors duration-150 ease-in-out ${
                       selectedCategory === categorie.nume ? "text-emerald-600" : "text-zinc-400 group-hover:text-zinc-600"
                     }`} />
                     {categorie.nume}
@@ -157,7 +162,7 @@ export default function ProductCategoryTabs({ produse, categorii }) {
           <div className="lg:hidden flex gap-2 overflow-x-auto pb-4 scrollbar-hide border-b border-zinc-200 mb-4">
             <button
               onClick={() => handleCategoryChange("toate")}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition whitespace-nowrap flex-shrink-0 ${
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-150 ease-in-out whitespace-nowrap flex-shrink-0 ${
                 selectedCategory === "toate"
                   ? "bg-emerald-600 text-white"
                   : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
@@ -167,7 +172,7 @@ export default function ProductCategoryTabs({ produse, categorii }) {
             </button>
             <button
               onClick={() => handleCategoryChange("personalizate")}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition whitespace-nowrap flex-shrink-0 ${
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-150 ease-in-out whitespace-nowrap flex-shrink-0 ${
                 selectedCategory === "personalizate"
                   ? "bg-purple-600 text-white"
                   : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
@@ -179,7 +184,7 @@ export default function ProductCategoryTabs({ produse, categorii }) {
               <button
                 key={categorie.id}
                 onClick={() => handleCategoryChange(categorie.nume)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition whitespace-nowrap flex-shrink-0 ${
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-150 ease-in-out whitespace-nowrap flex-shrink-0 ${
                   selectedCategory === categorie.nume
                     ? "bg-emerald-600 text-white"
                     : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
