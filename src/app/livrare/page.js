@@ -2,7 +2,15 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Livrare și retururi | Creating Layers",
-  description: "Informații despre livrare și retururi pentru produsele Creating Layers",
+  description: "Informații despre livrare și retururi pentru produsele Creating Layers. Livrare gratuită pentru comenzi peste 100 lei.",
+  alternates: {
+    canonical: "/livrare",
+  },
+  openGraph: {
+    title: "Livrare și retururi | Creating Layers",
+    description: "Informații despre livrare și retururi pentru produsele Creating Layers.",
+    url: "https://creatinglayers.ro/livrare",
+  },
 };
 
 export default function LivrarePage() {

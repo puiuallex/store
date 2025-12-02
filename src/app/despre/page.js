@@ -1,6 +1,14 @@
 export const metadata = {
   title: "Despre noi | Creating Layers",
   description: "Află mai multe despre Creating Layers, magazinul tău de încredere pentru produse de calitate.",
+  alternates: {
+    canonical: "/despre",
+  },
+  openGraph: {
+    title: "Despre noi | Creating Layers",
+    description: "Află mai multe despre Creating Layers, magazinul tău de încredere pentru produse de calitate.",
+    url: "https://creatinglayers.ro/despre",
+  },
 };
 
 const valori = [

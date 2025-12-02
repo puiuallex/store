@@ -1,5 +1,14 @@
 export const metadata = {
   title: "Contact | Creating Layers",
+  description: "Contactează-ne pe WhatsApp pentru comenzi, întrebări sau asistență. Răspundem rapid și suntem disponibili pentru tine.",
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    title: "Contact | Creating Layers",
+    description: "Contactează-ne pe WhatsApp pentru comenzi, întrebări sau asistență.",
+    url: "https://creatinglayers.ro/contact",
+  },
 };
 
 const contactDetails = [

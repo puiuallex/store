@@ -1,5 +1,18 @@
 export const metadata = {
   title: "Politica de confidențialitate | Creating Layers",
+  description: "Politica de confidențialitate Creating Layers - protecția datelor tale personale este importantă pentru noi.",
+  alternates: {
+    canonical: "/confidentialitate",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Politica de confidențialitate | Creating Layers",
+    description: "Politica de confidențialitate Creating Layers - protecția datelor tale personale.",
+    url: "https://creatinglayers.ro/confidentialitate",
+  },
 };
 
 const policies = [

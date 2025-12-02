@@ -1,5 +1,18 @@
 export const metadata = {
   title: "Termeni și condiții | Creating Layers",
+  description: "Termeni și condiții de utilizare pentru Creating Layers - comenzi, plată, livrare și retururi.",
+  alternates: {
+    canonical: "/termeni",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Termeni și condiții | Creating Layers",
+    description: "Termeni și condiții de utilizare pentru Creating Layers.",
+    url: "https://creatinglayers.ro/termeni",
+  },
 };
 
 const sections = [

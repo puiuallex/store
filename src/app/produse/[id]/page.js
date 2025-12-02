@@ -37,6 +37,9 @@ export async function generateMetadata({ params }) {
   return {
     title: `${produs.nume} | Creating Layers`,
     description: produs.descriere,
+    alternates: {
+      canonical: `/produse/${id}`,
+    },
     openGraph: {
       title: `${produs.nume} | Creating Layers`,
       description: produs.descriere,
@@ -115,11 +118,50 @@ export default async function ProductPage({ params }) {
     "sku": produs.id
   };
 
+  // BreadcrumbList structured data
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Acasă",
+        "item": "https://creatinglayers.ro"
+      },
+      ...(produs.categorii && produs.categorii.length > 0
+        ? [{
+            "@type": "ListItem",
+            "position": 2,
+            "name": produs.categorii[0],
+            "item": `https://creatinglayers.ro/?categorie=${encodeURIComponent(produs.categorii[0])}`
+          }]
+        : produs.categorie
+        ? [{
+            "@type": "ListItem",
+            "position": 2,
+            "name": produs.categorie,
+            "item": `https://creatinglayers.ro/?categorie=${encodeURIComponent(produs.categorie)}`
+          }]
+        : []),
+      {
+        "@type": "ListItem",
+        "position": produs.categorii && produs.categorii.length > 0 ? 3 : (produs.categorie ? 3 : 2),
+        "name": produs.nume,
+        "item": `https://creatinglayers.ro/produse/${produs.id}`
+      }
+    ]
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
       />
       <div className="space-y-8">
         <Breadcrumbs items={breadcrumbs} />
