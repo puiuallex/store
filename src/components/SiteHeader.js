@@ -208,7 +208,7 @@ function SiteHeaderContent() {
       />
 
               {/* Navigare principală */}
-              <div className="border-t border-zinc-800/50">
+              <div className="bg-zinc-900/30">
                 <button
                   onClick={() => setIsNavigationOpen(!isNavigationOpen)}
                   className="w-full flex items-center justify-between px-4 py-4 text-left"
@@ -233,7 +233,7 @@ function SiteHeaderContent() {
                           onClick={() => setOpen(false)}
                           className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                             isActive(link.href)
-                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                              ? "text-emerald-300"
                               : "text-zinc-300 hover:bg-white/5 hover:text-white"
                           }`}
                         >

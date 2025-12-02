@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 /**
@@ -27,7 +28,28 @@ export default function SideDrawer({
   position = "left",
   onOverlayClick,
 }) {
-  if (!isOpen) return null;
+  const [shouldRender, setShouldRender] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Gestionează render-ul pentru animație smooth
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setIsAnimating(false);
+      // Așteaptă un frame pentru a permite browser-ului să detecteze schimbarea
+      const timer = setTimeout(() => {
+        setIsAnimating(true);
+      }, 10); // Mic delay pentru a permite reflow
+      return () => clearTimeout(timer);
+    } else {
+      setIsAnimating(false);
+      // Așteaptă ca animația să se termine înainte de a elimina din DOM
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 300); // Durata animației
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   const handleOverlayClick = () => {
     if (onOverlayClick) {
@@ -41,28 +63,36 @@ export default function SideDrawer({
     ? "right-0" 
     : "left-0";
 
+  // Clase pentru animație slide
   const transformClasses = position === "right"
-    ? (isOpen ? "translate-x-0" : "translate-x-full")
-    : (isOpen ? "translate-x-0" : "-translate-x-full");
+    ? (isAnimating ? "translate-x-0" : "translate-x-full")
+    : (isAnimating ? "translate-x-0" : "-translate-x-full");
+
+  // Clase pentru overlay fade
+  const overlayClasses = isOpen 
+    ? "opacity-100 visible" 
+    : "opacity-0 invisible";
+
+  if (!shouldRender) return null;
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay cu animație fade */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm lg:hidden"
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300 ease-in-out ${overlayClasses}`}
         style={{ zIndex: zIndexOverlay }}
         onClick={handleOverlayClick}
         aria-hidden="true"
       />
       
-      {/* Drawer */}
+      {/* Drawer cu animație slide */}
       <div
         className={`fixed inset-y-0 ${positionClasses} h-full ${width} bg-gradient-to-b from-zinc-950 via-zinc-950 to-zinc-900 backdrop-blur-xl shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden ${transformClasses}`}
         style={{ zIndex: zIndexDrawer }}
       >
         <div className="flex flex-col h-full">
           {/* Header cu titlu și buton închidere */}
-          <div className="flex items-center justify-between border-b border-zinc-800/50 px-6 py-5 bg-zinc-900/50">
+          <div className="flex items-center justify-between border-b border-zinc-800/50 px-6 py-4 bg-zinc-900/50">
             <div className="flex-1 min-w-0">
               {typeof title === "string" ? (
                 <h2 className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight">

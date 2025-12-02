@@ -94,8 +94,8 @@ export default function CategoryList({
   };
 
   return (
-    <div className="px-4 py-4">
-      <p className="px-3 mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+    <div className="px-4 py-4 bg-zinc-900/30">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">
         Categorii
       </p>
       <nav className="space-y-1">
@@ -149,3 +149,4 @@ export default function CategoryList({
     </div>
   );
 }
+
