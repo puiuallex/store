@@ -6,7 +6,8 @@ import { Suspense } from "react";
 import { 
   Bars3Icon, 
   UserCircleIcon, 
-  ChevronDownIcon, 
+  ChevronDownIcon,
+  ChevronUpIcon,
   ShoppingCartIcon, 
   ArrowRightOnRectangleIcon,
   HomeIcon,
@@ -14,7 +15,7 @@ import {
   TruckIcon,
   PhoneIcon,
   SparklesIcon,
-  InformationCircleIcon
+  ClipboardDocumentListIcon
 } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useState } from "react";
@@ -35,18 +36,24 @@ function SiteHeaderContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
+  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const { categories, loading: loadingCategories } = useCategories();
   const { itemCount } = useCart();
   const { user, signOut, loading: authLoading } = useAuth();
 
   const isActive = (href) => {
     if (href === "/") {
-      return pathname === "/" && !searchParams?.get("categorie");
+      // Link-ul "Magazin" este activ când suntem pe pagina principală, indiferent de categorie
+      return pathname === "/";
     }
     return pathname?.startsWith(href);
   };
 
   const isCategoryActive = (categoryName) => {
+    // Verifică dacă suntem pe pagina principală
+    if (pathname !== "/") {
+      return false;
+    }
     if (categoryName === "toate") {
       return !searchParams?.get("categorie");
     }
@@ -201,51 +208,44 @@ function SiteHeaderContent() {
       />
 
               {/* Navigare principală */}
-              <div className="px-4 py-4 border-t border-zinc-800/50">
-                <p className="px-3 mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">
-                  Navigare
-                </p>
-                <nav className="space-y-1">
-                  {links.map((link) => {
-                    const Icon = link.icon;
-                    return (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        onClick={() => setOpen(false)}
-                        className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                          isActive(link.href)
-                            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                            : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                        }`}
-                      >
-                        <Icon className={`h-5 w-5 flex-shrink-0 ${
-                          isActive(link.href) ? "text-emerald-400" : "text-zinc-400 group-hover:text-zinc-300"
-                        }`} />
-                        {link.label}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              {/* Link către coș */}
-              <div className="px-4 py-4 border-t border-zinc-800/50">
-                <Link
-                  href="/cos"
-                  onClick={() => setOpen(false)}
-                  className="group flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-300 transition-all hover:bg-white/5 hover:text-white"
+              <div className="border-t border-zinc-800/50">
+                <button
+                  onClick={() => setIsNavigationOpen(!isNavigationOpen)}
+                  className="w-full flex items-center justify-between px-4 py-4 text-left"
                 >
-                  <div className="flex items-center gap-3">
-                    <ShoppingCartIcon className="h-5 w-5 text-zinc-400 group-hover:text-zinc-300" />
-                    <span>Coș de cumpărături</span>
-                  </div>
-                  {itemCount > 0 && (
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">
-                      {itemCount > 99 ? "99+" : itemCount}
-                    </span>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                    Navigare
+                  </p>
+                  {isNavigationOpen ? (
+                    <ChevronUpIcon className="h-4 w-4 text-zinc-400" />
+                  ) : (
+                    <ChevronDownIcon className="h-4 w-4 text-zinc-400" />
                   )}
-                </Link>
+                </button>
+                {isNavigationOpen && (
+                  <nav className="space-y-1 px-4 pb-4">
+                    {links.map((link) => {
+                      const Icon = link.icon;
+                      return (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          onClick={() => setOpen(false)}
+                          className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                            isActive(link.href)
+                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                              : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                          }`}
+                        >
+                          <Icon className={`h-5 w-5 flex-shrink-0 ${
+                            isActive(link.href) ? "text-emerald-400" : "text-zinc-400 group-hover:text-zinc-300"
+                          }`} />
+                          {link.label}
+                        </Link>
+                      );
+                    })}
+                  </nav>
+                )}
               </div>
 
       {/* Secțiunea de cont utilizator jos - fixă */}
@@ -283,8 +283,24 @@ function SiteHeaderContent() {
                       onClick={() => setOpen(false)}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-300 transition-all hover:bg-white/5 hover:text-white"
                     >
-                      <InformationCircleIcon className="h-5 w-5 text-zinc-400" />
+                      <ClipboardDocumentListIcon className="h-5 w-5 text-zinc-400" />
                       Comenzile mele
+                    </Link>
+                    {/* Link către coș */}
+                    <Link
+                      href="/cos"
+                      onClick={() => setOpen(false)}
+                      className="group flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-300 transition-all hover:bg-white/5 hover:text-white mt-2"
+                    >
+                      <div className="flex items-center gap-3">
+                        <ShoppingCartIcon className="h-5 w-5 text-zinc-400 group-hover:text-zinc-300" />
+                        <span>Coș de cumpărături</span>
+                      </div>
+                      {itemCount > 0 && (
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">
+                          {itemCount > 99 ? "99+" : itemCount}
+                        </span>
+                      )}
                     </Link>
                   </>
                 ) : (
