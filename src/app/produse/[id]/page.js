@@ -106,7 +106,44 @@ export default async function ProductPage({ params }) {
         ? "https://schema.org/InStock" 
         : "https://schema.org/PreOrder",
       "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      "itemCondition": "https://schema.org/NewCondition"
+      "itemCondition": "https://schema.org/NewCondition",
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "RO",
+        "returnPolicyCategory": produs.personalizat 
+          ? "https://schema.org/MerchantReturnNotPermitted" 
+          : "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": produs.personalizat ? undefined : 14,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "priceCurrency": "RON",
+          "value": (produs.pret_oferta || produs.pret) <= 100 ? "20" : "0"
+        },
+        "shippingDestination": {
+          "@type": "DefinedRegion",
+          "addressCountry": "RO"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 2,
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 2,
+            "unitCode": "DAY"
+          }
+        }
+      }
     },
     "brand": {
       "@type": "Brand",
