@@ -5,35 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { 
   HomeIcon,
-  SparklesIcon,
-  TagIcon,
-  BuildingOfficeIcon,
-  WrenchScrewdriverIcon,
-  TruckIcon,
-  PaintBrushIcon
+  SparklesIcon
 } from "@heroicons/react/24/outline";
 import ProductCard from "./ProductCard";
-
-// Funcție helper pentru a obține iconul potrivit pentru fiecare categorie
-function getCategoryIcon(categoryName) {
-  const name = categoryName.toLowerCase();
-  
-  if (name.includes("birou")) {
-    return BuildingOfficeIcon;
-  }
-  if (name.includes("auto")) {
-    return TruckIcon;
-  }
-  if (name.includes("scule") || name.includes("unelte")) {
-    return WrenchScrewdriverIcon;
-  }
-  if (name.includes("decor")) {
-    return PaintBrushIcon;
-  }
-  
-  // Icon default pentru restul categoriilor
-  return TagIcon;
-}
+import { getCategoryIcon } from "@/lib/categoryIcons";
 
 export default function ProductCategoryTabs({ produse, categorii }) {
   const router = useRouter();

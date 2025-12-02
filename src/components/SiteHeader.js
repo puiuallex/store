@@ -15,41 +15,20 @@ import {
   TruckIcon,
   PhoneIcon,
   SparklesIcon,
-  TagIcon,
-  InformationCircleIcon,
-  BuildingOfficeIcon,
-  WrenchScrewdriverIcon,
-  BoltIcon
+  InformationCircleIcon
 } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useCategories } from "@/context/CategoriesContext";
+import { getCategoryIcon } from "@/lib/categoryIcons";
 
 const links = [
   { href: "/", label: "Magazin", icon: ShoppingBagIcon },
   { href: "/livrare", label: "Livrare și retururi", icon: TruckIcon },
   { href: "/contact", label: "Contact", icon: PhoneIcon },
 ];
-
-// Funcție helper pentru a obține iconul potrivit pentru fiecare categorie
-function getCategoryIcon(categoryName) {
-  const name = categoryName.toLowerCase();
-  
-  if (name.includes("birou")) {
-    return BuildingOfficeIcon;
-  }
-  if (name.includes("auto")) {
-    return BoltIcon; // Folosim BoltIcon pentru auto (reprezintă energie/putere)
-  }
-  if (name.includes("scule") || name.includes("unelte")) {
-    return WrenchScrewdriverIcon;
-  }
-  
-  // Icon default pentru restul categoriilor
-  return TagIcon;
-}
 
 // Component intern care folosește useSearchParams
 function SiteHeaderContent() {
