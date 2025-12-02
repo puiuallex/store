@@ -8,7 +8,6 @@ import {
   UserCircleIcon, 
   ChevronDownIcon, 
   ShoppingCartIcon, 
-  XMarkIcon, 
   ArrowRightOnRectangleIcon,
   HomeIcon,
   ShoppingBagIcon,
@@ -22,7 +21,8 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useCategories } from "@/context/CategoriesContext";
-import { getCategoryIcon } from "@/lib/categoryIcons";
+import SideDrawer from "./SideDrawer";
+import CategoryList from "./CategoryList";
 
 const links = [
   { href: "/", label: "Magazin", icon: ShoppingBagIcon },
@@ -47,6 +47,9 @@ function SiteHeaderContent() {
   };
 
   const isCategoryActive = (categoryName) => {
+    if (categoryName === "toate") {
+      return !searchParams?.get("categorie");
+    }
     return searchParams?.get("categorie") === categoryName;
   };
 
@@ -145,133 +148,57 @@ function SiteHeaderContent() {
             </Link>
           </div>
         </div>
-        {/* Mobile layout: menu button (left) - logo (center) - cart button (right) */}
-        <div className="relative flex lg:hidden items-center justify-between">
-          <button
-            type="button"
-            className="inline-flex items-center rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
-            onClick={() => setOpen((prev) => !prev)}
-            aria-label="Deschide meniul"
-          >
-            <Bars3Icon className="h-6 w-6" />
-          </button>
-          <Link href="/" className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight">
+        {/* Mobile layout: logo (left) - menu button and cart button (right) */}
+        <div className="flex lg:hidden items-center justify-between">
+          <Link href="/" className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight">
             creatinglayers.ro
           </Link>
-          <Link
-            href="/cos"
-            className="relative inline-flex items-center justify-center rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
-            aria-label="Coș de cumpărături"
-          >
-            <ShoppingCartIcon className="h-6 w-6" />
-            {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">
-                {itemCount > 99 ? "99+" : itemCount}
-              </span>
-            )}
-          </Link>
-        </div>
-      </div>
-    </header>
-    <>
-      {/* Overlay pentru sidebar */}
-      {open && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm lg:hidden"
-          onClick={() => setOpen(false)}
-        />
-      )}
-      {/* Sidebar din stânga */}
-      <div
-        className={`fixed top-0 left-0 z-[110] h-full w-80 max-w-[85vw] bg-gradient-to-b from-zinc-950 via-zinc-950 to-zinc-900 backdrop-blur-xl shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden ${
-          open ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex flex-col h-full">
-          {/* Header sidebar cu logo și buton închidere */}
-          <div className="flex items-center justify-between border-b border-zinc-800/50 px-6 py-5 bg-zinc-900/50">
-            <Link 
-              href="/" 
-              onClick={() => setOpen(false)}
-              className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight"
+          <div className="flex items-center gap-2">
+            <Link
+              href="/cos"
+              className="relative inline-flex items-center justify-center rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+              aria-label="Coș de cumpărături"
             >
-              creatinglayers.ro
+              <ShoppingCartIcon className="h-6 w-6" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">
+                  {itemCount > 99 ? "99+" : itemCount}
+                </span>
+              )}
             </Link>
             <button
               type="button"
-              className="inline-flex items-center rounded-lg bg-white/10 p-2 text-white transition hover:bg-white/20"
-              onClick={() => setOpen(false)}
-              aria-label="Închide meniul"
+              className="inline-flex items-center rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+              onClick={() => setOpen((prev) => !prev)}
+              aria-label="Deschide meniul"
             >
-              <XMarkIcon className="h-5 w-5" />
+              <Bars3Icon className="h-6 w-6" />
             </button>
           </div>
-          
-          {/* Conținut sidebar - scrollable */}
-          <div className="flex flex-col h-full overflow-hidden">
-            <div className="flex-1 overflow-y-auto">
-              {/* Categorii de produse */}
-              <div className="px-4 py-4">
-                <p className="px-3 mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">
-                  Categorii
-                </p>
-                <nav className="space-y-1">
-                  <Link
-                    href="/"
-                    onClick={handleCategoryClick}
-                    className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                      !searchParams?.get("categorie")
-                        ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                        : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                    }`}
-                  >
-                    <HomeIcon className={`h-5 w-5 flex-shrink-0 ${
-                      !searchParams?.get("categorie") ? "text-emerald-400" : "text-zinc-400 group-hover:text-zinc-300"
-                    }`} />
-                    Toate produsele
-                  </Link>
-                  <Link
-                    href="/?categorie=personalizate"
-                    onClick={handleCategoryClick}
-                    className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                      isCategoryActive("personalizate")
-                        ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                        : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                    }`}
-                  >
-                    <SparklesIcon className={`h-5 w-5 flex-shrink-0 ${
-                      isCategoryActive("personalizate") ? "text-purple-400" : "text-zinc-400 group-hover:text-zinc-300"
-                    }`} />
-                    Personalizate
-                  </Link>
-                  {loadingCategories ? (
-                    <div className="px-3 py-2.5">
-                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-600 border-t-emerald-500"></div>
-                    </div>
-                  ) : (
-                    categories.map((category) => {
-                      const CategoryIcon = getCategoryIcon(category.nume);
-                      return (
-                        <Link
-                          key={category.id}
-                          href={`/?categorie=${encodeURIComponent(category.nume)}`}
-                          onClick={handleCategoryClick}
-                          className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                            isCategoryActive(category.nume)
-                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                              : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                          }`}
-                        >
-                          <CategoryIcon className={`h-5 w-5 flex-shrink-0 ${
-                            isCategoryActive(category.nume) ? "text-emerald-400" : "text-zinc-400 group-hover:text-zinc-300"
-                          }`} />
-                          {category.nume}
-                        </Link>
-                      );
-                    })
-                  )}
-                </nav>
-              </div>
+        </div>
+      </div>
+    </header>
+    <SideDrawer
+      isOpen={open}
+      onClose={() => setOpen(false)}
+      position="right"
+      title={
+        <Link 
+          href="/" 
+          onClick={() => setOpen(false)}
+          className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight"
+        >
+          creatinglayers.ro
+        </Link>
+      }
+    >
+      <CategoryList
+        categorii={categories}
+        selectedCategory={isCategoryActive}
+        onCategoryClick={handleCategoryClick}
+        useLinks={true}
+        loading={loadingCategories}
+      />
 
               {/* Navigare principală */}
               <div className="px-4 py-4 border-t border-zinc-800/50">
@@ -320,9 +247,8 @@ function SiteHeaderContent() {
                   )}
                 </Link>
               </div>
-            </div>
 
-            {/* Secțiunea de cont utilizator jos - fixă */}
+      {/* Secțiunea de cont utilizator jos - fixă */}
             {!authLoading && (
               <div className="border-t border-zinc-800/50 bg-zinc-900/30 px-4 py-4">
                 {user ? (
@@ -373,10 +299,7 @@ function SiteHeaderContent() {
                 )}
               </div>
             )}
-          </div>
-        </div>
-      </div>
-    </>
+    </SideDrawer>
     </>
   );
 }

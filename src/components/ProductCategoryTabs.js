@@ -6,10 +6,11 @@ import Link from "next/link";
 import { 
   HomeIcon,
   SparklesIcon,
-  FunnelIcon,
-  XMarkIcon
+  FunnelIcon
 } from "@heroicons/react/24/outline";
 import ProductCard from "./ProductCard";
+import SideDrawer from "./SideDrawer";
+import CategoryList from "./CategoryList";
 import { getCategoryIcon } from "@/lib/categoryIcons";
 
 export default function ProductCategoryTabs({ produse, categorii }) {
@@ -77,6 +78,9 @@ export default function ProductCategoryTabs({ produse, categorii }) {
     <div className="space-y-4 lg:space-y-0">
       {/* Header cu titlu și buton filtru - doar pe mobil */}
       <div className="lg:hidden flex items-center justify-between mb-4">
+        <span className="text-sm text-zinc-500 font-medium">
+          {filteredProducts.length} {filteredProducts.length === 1 ? 'produs' : 'produse'}
+        </span>
         <button
           onClick={() => setIsFilterOpen(true)}
           className="flex items-center gap-2 pl-0 pr-3 py-2 text-sm font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
@@ -90,9 +94,6 @@ export default function ProductCategoryTabs({ produse, categorii }) {
               : selectedCategory}
           </span>
         </button>
-        <span className="text-sm text-zinc-500 font-medium">
-          {filteredProducts.length} {filteredProducts.length === 1 ? 'produs' : 'produse'}
-        </span>
       </div>
 
       {/* Layout desktop: sidebar cu categorii + produse */}
@@ -159,93 +160,19 @@ export default function ProductCategoryTabs({ produse, categorii }) {
         {/* Conținut principal - produse */}
         <div className="flex-1 min-w-0">
           {/* Drawer pentru categorii pe mobil */}
-          {isFilterOpen && (
-            <>
-              {/* Overlay */}
-              <div 
-                className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm lg:hidden"
-                onClick={() => setIsFilterOpen(false)}
-              />
-              {/* Drawer */}
-              <div className="fixed inset-y-0 left-0 z-[110] h-full w-80 max-w-[85vw] bg-gradient-to-b from-zinc-950 via-zinc-950 to-zinc-900 backdrop-blur-xl shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden">
-                <div className="flex flex-col h-full">
-                  {/* Header sidebar cu logo și buton închidere */}
-                  <div className="flex items-center justify-between border-b border-zinc-800/50 px-6 py-5 bg-zinc-900/50">
-                    <h2 className="text-lg font-semibold text-white font-[family-name:var(--font-orbitron)] tracking-tight">
-                      Filtrează
-                    </h2>
-                    <button
-                      type="button"
-                      className="inline-flex items-center rounded-lg bg-white/10 p-2 text-white transition hover:bg-white/20"
-                      onClick={() => setIsFilterOpen(false)}
-                      aria-label="Închide meniul"
-                    >
-                      <XMarkIcon className="h-5 w-5" />
-                    </button>
-                  </div>
-                  
-                  {/* Conținut sidebar - scrollable */}
-                  <div className="flex flex-col h-full overflow-hidden">
-                    <div className="flex-1 overflow-y-auto">
-                      {/* Categorii de produse */}
-                      <div className="px-4 py-4">
-                        <p className="px-3 mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">
-                          Categorii
-                        </p>
-                        <nav className="space-y-1">
-                          <button
-                            onClick={() => handleCategoryChange("toate")}
-                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                              selectedCategory === "toate"
-                                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                                : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                            }`}
-                          >
-                            <HomeIcon className={`h-5 w-5 flex-shrink-0 ${
-                              selectedCategory === "toate" ? "text-emerald-400" : "text-zinc-400 group-hover:text-zinc-300"
-                            }`} />
-                            Toate produsele
-                          </button>
-                          <button
-                            onClick={() => handleCategoryChange("personalizate")}
-                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                              selectedCategory === "personalizate"
-                                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                                : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                            }`}
-                          >
-                            <SparklesIcon className={`h-5 w-5 flex-shrink-0 ${
-                              selectedCategory === "personalizate" ? "text-purple-400" : "text-zinc-400 group-hover:text-zinc-300"
-                            }`} />
-                            Personalizate
-                          </button>
-                          {categorii.map((categorie) => {
-                            const CategoryIcon = getCategoryIcon(categorie.nume);
-                            return (
-                              <button
-                                key={categorie.id}
-                                onClick={() => handleCategoryChange(categorie.nume)}
-                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                                  selectedCategory === categorie.nume
-                                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                                    : "text-zinc-300 hover:bg-white/5 hover:text-white"
-                                }`}
-                              >
-                                <CategoryIcon className={`h-5 w-5 flex-shrink-0 ${
-                                  selectedCategory === categorie.nume ? "text-emerald-400" : "text-zinc-400 group-hover:text-zinc-300"
-                                }`} />
-                                {categorie.nume}
-                              </button>
-                            );
-                          })}
-                        </nav>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
+          <SideDrawer
+            isOpen={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+            position="right"
+            title="Filtrează"
+          >
+            <CategoryList
+              categorii={categorii}
+              selectedCategory={selectedCategory}
+              onCategoryClick={handleCategoryChange}
+              useLinks={false}
+            />
+          </SideDrawer>
 
           {/* Grid cu produse filtrate */}
           {filteredProducts.length === 0 ? (
