@@ -9,7 +9,8 @@ import {
   TagIcon,
   BuildingOfficeIcon,
   WrenchScrewdriverIcon,
-  BoltIcon
+  TruckIcon,
+  PaintBrushIcon
 } from "@heroicons/react/24/outline";
 import ProductCard from "./ProductCard";
 
@@ -21,10 +22,13 @@ function getCategoryIcon(categoryName) {
     return BuildingOfficeIcon;
   }
   if (name.includes("auto")) {
-    return BoltIcon;
+    return TruckIcon;
   }
   if (name.includes("scule") || name.includes("unelte")) {
     return WrenchScrewdriverIcon;
+  }
+  if (name.includes("decor")) {
+    return PaintBrushIcon;
   }
   
   // Icon default pentru restul categoriilor
