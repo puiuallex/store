@@ -77,7 +77,6 @@ export default function ProductCategoryTabs({ produse, categorii }) {
     <div className="space-y-4 lg:space-y-0">
       {/* Header cu titlu și buton filtru - doar pe mobil */}
       <div className="lg:hidden flex items-center justify-between mb-4">
-        <p className="text-xs uppercase tracking-[0.5em] text-emerald-600">Produse</p>
         <button
           onClick={() => setIsFilterOpen(true)}
           className="flex items-center gap-2 px-3 py-2 rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300 transition-colors duration-150 ease-in-out"
@@ -91,6 +90,9 @@ export default function ProductCategoryTabs({ produse, categorii }) {
               : selectedCategory}
           </span>
         </button>
+        <span className="text-sm text-zinc-500 font-medium">
+          {filteredProducts.length} {filteredProducts.length === 1 ? 'produs' : 'produse'}
+        </span>
       </div>
 
       {/* Layout desktop: sidebar cu categorii + produse */}
