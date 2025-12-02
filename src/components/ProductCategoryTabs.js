@@ -79,10 +79,10 @@ export default function ProductCategoryTabs({ produse, categorii }) {
       <div className="lg:hidden flex items-center justify-between mb-4">
         <button
           onClick={() => setIsFilterOpen(true)}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300 transition-colors duration-150 ease-in-out"
+          className="flex items-center gap-2 pl-0 pr-3 py-2 text-sm font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
         >
-          <FunnelIcon className="h-4 w-4" />
-          <span className="font-medium text-sm">
+          <FunnelIcon className="h-5 w-5" />
+          <span>
             {selectedCategory === "toate" 
               ? "Filtrare" 
               : selectedCategory === "personalizate"
