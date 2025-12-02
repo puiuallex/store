@@ -30,3 +30,4 @@ export function getCategoryIcon(categoryName) {
   // Icon default pentru restul categoriilor
   return TagIcon;
 }
+
