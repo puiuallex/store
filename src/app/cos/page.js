@@ -219,7 +219,7 @@ export default function CartPage() {
           </p>
         )}
         <p className="mt-4 text-xs text-zinc-500">
-          Plata se face exclusiv la livrare (ramburs). Confirmăm telefonic înainte de expediere.
+          Plata se face exclusiv la livrare (ramburs).
         </p>
       </aside>
     </div>

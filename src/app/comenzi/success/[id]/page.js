@@ -136,10 +136,6 @@ export default function OrderSuccessPage({ params }) {
         <ul className="space-y-2 text-sm text-blue-800">
           <li className="flex items-start gap-2">
             <span className="mt-0.5">✓</span>
-            <span>Vom confirma comanda ta telefonic înainte de expediere</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-0.5">✓</span>
             <span>Plata se face la livrare (ramburs)</span>
           </li>
           <li className="flex items-start gap-2">

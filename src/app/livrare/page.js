@@ -40,7 +40,6 @@ export default function LivrarePage() {
             <div className="space-y-2">
               <p className="font-semibold text-zinc-900">Proces de livrare:</p>
               <ul className="list-disc list-inside space-y-1 ml-4">
-                <li>Confirmăm comanda telefonic înainte de expediere</li>
                 <li>Coletul este expediat prin curier</li>
                 <li>Vei primi un telefon când coletul ajunge la tine</li>
                 <li>Plata se face la livrare (ramburs)</li>

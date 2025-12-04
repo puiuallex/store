@@ -79,7 +79,7 @@ export default function OrdersPage() {
 
       {showSuccess && (
         <div className="rounded-2xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-800">
-          Comanda ta a fost plasată cu succes! Vom confirma telefonic înainte de expediere.
+          Comanda ta a fost plasată cu succes!
         </div>
       )}
 

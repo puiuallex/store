@@ -146,11 +146,8 @@ export default function CheckoutPage() {
     if (!city || city.trim().length === 0) {
       return "Localitatea este obligatorie";
     }
-    if (formData.county) {
-      const validCity = cities.find(c => c.name === city);
-      if (!validCity && cities.length > 0) {
-        return "Te rugăm să selectezi o localitate validă pentru județul ales";
-      }
+    if (city.trim().length < 2) {
+      return "Localitatea trebuie să aibă minim 2 caractere";
     }
     return null;
   };
@@ -291,19 +288,7 @@ export default function CheckoutPage() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // Dacă se schimbă județul, resetează orașul și erorile
-    if (name === "county") {
-      setFormData(prev => ({
-        ...prev,
-        county: value,
-        city: "",
-      }));
-      // Resetează eroarea pentru oraș când se schimbă județul
-      setErrors(prev => ({
-        ...prev,
-        city: null,
-      }));
-    } else if (name === "phone") {
+    if (name === "phone") {
       // Formatează automat numărul de telefon
       const cleaned = value.replace(/\D/g, "");
       let formatted = cleaned;
@@ -532,32 +517,20 @@ export default function CheckoutPage() {
 
               <label className="flex flex-col text-sm font-medium text-zinc-700">
                 Localitate *
-                <select
+                <input
+                  type="text"
                   name="city"
                   required
                   value={formData.city}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  disabled={!formData.county || cities.length === 0}
                   className={`mt-2 rounded-2xl border px-4 py-3 text-sm text-zinc-800 outline-none transition focus:bg-white ${
                     errors.city && touched.city
                       ? "border-rose-400 bg-rose-50/60 focus:border-rose-500"
                       : "border-zinc-200 bg-zinc-50/60 focus:border-emerald-500"
-                  } ${!formData.county || cities.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
-                >
-                  <option value="">
-                    {!formData.county
-                      ? "Selectează mai întâi județul"
-                      : cities.length === 0
-                      ? "Nu există localități disponibile"
-                      : "Selectează localitatea"}
-                  </option>
-                  {cities.map((city) => (
-                    <option key={city.name} value={city.name}>
-                      {city.name}
-                    </option>
-                  ))}
-                </select>
+                  }`}
+                  placeholder="Oraș sau localitate"
+                />
                 {errors.city && touched.city && (
                   <span className="mt-1 text-xs text-rose-600">{errors.city}</span>
                 )}
@@ -702,7 +675,7 @@ export default function CheckoutPage() {
         </div>
         <p className="mt-4 text-xs text-zinc-500">
           {formData.paymentMethod === "ramburs" 
-            ? "Plata se face exclusiv la livrare (ramburs). Vom confirma telefonic înainte de expediere."
+            ? "Plata se face exclusiv la livrare (ramburs)."
             : "Plata cu cardul va fi disponibilă în curând."}
         </p>
         <Link href="/cos" className="mt-4 inline-block text-sm font-semibold text-emerald-600 hover:text-emerald-500 lg:mt-6">

@@ -357,7 +357,7 @@ export default function OrderDetailsPage({ params }) {
             <p className="font-semibold mb-1">Următorii pași:</p>
             <p>
               {order.status === "nouă"
-                ? "Comanda ta a fost primită. Vom confirma telefonic înainte de expediere."
+                ? "Comanda ta a fost primită."
                 : order.status === "confirmată"
                   ? "Comanda ta a fost confirmată. Vom proceda la expediere în curând."
                   : order.status === "expediată"
