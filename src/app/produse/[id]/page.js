@@ -142,7 +142,7 @@ export default async function ProductPage({ params }) {
         "@type": "OfferShippingDetails",
         "shippingRate": {
           "@type": "MonetaryAmount",
-          "priceCurrency": "RON",
+          "currency": "RON",
           "value": (produs.pret_oferta || produs.pret) <= 100 ? "20" : "0"
         },
         "shippingDestination": {
