@@ -21,6 +21,7 @@ export default function CheckoutPage() {
 
   const [formData, setFormData] = useState({
     fullName: user?.user_metadata?.full_name || "",
+    email: user?.email || "",
     phone: "",
     address: "",
     city: "",
@@ -172,10 +173,22 @@ export default function CheckoutPage() {
     return null;
   };
 
+  const validateEmail = (email) => {
+    if (!email || email.trim().length === 0) {
+      return "Adresa de email este obligatorie";
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      return "Te rugăm să introduci o adresă de email validă";
+    }
+    return null;
+  };
+
   // Validare completă a formularului
   const validateForm = () => {
     const newErrors = {
       fullName: validateFullName(formData.fullName),
+      email: validateEmail(formData.email),
       phone: validatePhone(formData.phone),
       address: validateAddress(formData.address),
       county: validateCounty(formData.county),
@@ -237,6 +250,7 @@ export default function CheckoutPage() {
         subtotal,
         shipping_cost: shippingCost,
         total,
+        email: formData.email.trim(),
         shipping_address: {
           fullName: formData.fullName.trim(),
           phone: formData.phone.replace(/[\s\-\(\)]/g, ""),
@@ -360,6 +374,9 @@ export default function CheckoutPage() {
       case "fullName":
         fieldError = validateFullName(value);
         break;
+      case "email":
+        fieldError = validateEmail(value);
+        break;
       case "phone":
         fieldError = validatePhone(value);
         break;
@@ -420,6 +437,27 @@ export default function CheckoutPage() {
               />
               {errors.fullName && touched.fullName && (
                 <span className="mt-1 text-xs text-rose-600">{errors.fullName}</span>
+              )}
+            </label>
+
+            <label className="flex flex-col text-sm font-medium text-zinc-700">
+              Email *
+              <input
+                type="email"
+                name="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`mt-2 rounded-2xl border px-4 py-3 text-sm text-zinc-800 outline-none transition focus:bg-white ${
+                  errors.email && touched.email
+                    ? "border-rose-400 bg-rose-50/60 focus:border-rose-500"
+                    : "border-zinc-200 bg-zinc-50/60 focus:border-emerald-500"
+                }`}
+                placeholder="email@exemplu.com"
+              />
+              {errors.email && touched.email && (
+                <span className="mt-1 text-xs text-rose-600">{errors.email}</span>
               )}
             </label>
 

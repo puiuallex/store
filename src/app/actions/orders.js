@@ -1,6 +1,7 @@
 "use server";
 
 import { createServerSupabaseClient } from "@/lib/supabaseClient";
+import { sendOrderConfirmationEmail, sendOrderNotificationToAdmin } from "@/lib/email";
 
 export async function createOrder(orderData, userId = null) {
   try {
@@ -19,6 +20,15 @@ export async function createOrder(orderData, userId = null) {
     const total = orderData.total !== undefined 
       ? orderData.total 
       : (orderData.subtotal + shippingCost);
+
+    // Obține email-ul utilizatorului dacă este autentificat
+    let userEmail = orderData.email || null;
+    if (!userEmail && userId) {
+      const { data: userData } = await supabase.auth.getUser();
+      if (userData?.user?.email) {
+        userEmail = userData.user.email;
+      }
+    }
 
     // Creează comanda în baza de date
     const { data, error } = await supabase
@@ -40,6 +50,32 @@ export async function createOrder(orderData, userId = null) {
     if (error) {
       console.error("Eroare la crearea comenzii:", error);
       return { error: "A apărut o eroare la plasarea comenzii. Te rugăm să încerci din nou." };
+    }
+
+    // Trimite email-uri (nu blocăm procesul dacă trimiterea email-ului eșuează)
+    if (data && data.id) {
+      const emailData = {
+        orderId: data.id,
+        email: userEmail,
+        items: orderData.items,
+        subtotal: orderData.subtotal,
+        shipping_cost: shippingCost,
+        total: total,
+        shipping_address: orderData.shipping_address,
+        notes: orderData.notes || null,
+      };
+
+      // Trimite email de confirmare către client (dacă există email)
+      if (userEmail) {
+        sendOrderConfirmationEmail(emailData).catch(err => {
+          console.error("Eroare la trimiterea email-ului de confirmare:", err);
+        });
+      }
+
+      // Trimite notificare către admin
+      sendOrderNotificationToAdmin(emailData).catch(err => {
+        console.error("Eroare la trimiterea notificării către admin:", err);
+      });
     }
 
     return { data, error: null };
