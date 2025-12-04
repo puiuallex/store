@@ -43,7 +43,12 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: `${produs.nume} | Creating Layers`,
       description: produs.descriere,
-      images: [fullImageUrl],
+      images: [{
+        url: fullImageUrl,
+        alt: `${produs.nume} - Creating Layers`,
+        width: 1200,
+        height: 630,
+      }],
       type: "website",
       url: `https://creatinglayers.ro/produse/${id}`,
     },
@@ -51,7 +56,10 @@ export async function generateMetadata({ params }) {
       card: "summary_large_image",
       title: `${produs.nume} | Creating Layers`,
       description: produs.descriere,
-      images: [fullImageUrl],
+      images: [{
+        url: fullImageUrl,
+        alt: `${produs.nume} - Creating Layers`,
+      }],
     },
   };
 }
@@ -95,8 +103,21 @@ export default async function ProductPage({ params }) {
     "name": produs.nume,
     "description": produs.descriere,
     "image": produs.imagini && produs.imagini.length > 0 
-      ? produs.imagini.map(img => img.startsWith('http') ? img : `https://creatinglayers.ro${img}`)
-      : (produs.imagine ? [produs.imagine.startsWith('http') ? produs.imagine : `https://creatinglayers.ro${produs.imagine}`] : []),
+      ? produs.imagini.map((img, index) => {
+          const fullUrl = img.startsWith('http') ? img : `https://creatinglayers.ro${img}`;
+          return {
+            "@type": "ImageObject",
+            "url": fullUrl,
+            "name": `${produs.nume}${produs.imagini.length > 1 ? ` - Imagine ${index + 1}` : ''}`,
+            "caption": `${produs.nume}${produs.imagini.length > 1 ? ` - Imagine ${index + 1}` : ''}`
+          };
+        })
+      : (produs.imagine ? [{
+          "@type": "ImageObject",
+          "url": produs.imagine.startsWith('http') ? produs.imagine : `https://creatinglayers.ro${produs.imagine}`,
+          "name": produs.nume,
+          "caption": produs.nume
+        }] : []),
     "offers": {
       "@type": "Offer",
       "url": `https://creatinglayers.ro/produse/${produs.id}`,

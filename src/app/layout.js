@@ -42,6 +42,10 @@ export const metadata = {
     "Creating Layers"
   ],
   authors: [{ name: "Creating Layers" }],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+  },
   alternates: {
     canonical: "/",
   },
