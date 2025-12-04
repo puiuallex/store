@@ -109,14 +109,13 @@ export default function CheckoutPage() {
     if (!phone || phone.trim().length === 0) {
       return "Numărul de telefon este obligatoriu";
     }
-    // Elimină spațiile și caracterele speciale
-    const cleanPhone = phone.replace(/[\s\-\(\)]/g, "");
-    // Verifică formatul: 07XXXXXXXX (10 cifre, începe cu 07)
-    if (cleanPhone.length < 10) {
-      return "Numărul de telefon trebuie să aibă 10 cifre";
+    // Numără doar cifrele
+    const digitsOnly = phone.replace(/\D/g, "");
+    if (digitsOnly.length < 7) {
+      return "Numărul de telefon trebuie să aibă minim 7 cifre";
     }
-    if (!/^07\d{8}$/.test(cleanPhone)) {
-      return "Numărul de telefon trebuie să înceapă cu 07 și să aibă 10 cifre";
+    if (digitsOnly.length > 15) {
+      return "Numărul de telefon este prea lung (maxim 15 cifre)";
     }
     return null;
   };
@@ -288,34 +287,10 @@ export default function CheckoutPage() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    if (name === "phone") {
-      // Formatează automat numărul de telefon
-      const cleaned = value.replace(/\D/g, "");
-      let formatted = cleaned;
-      if (cleaned.length > 0 && cleaned[0] !== "0") {
-        formatted = "0" + cleaned;
-      }
-      if (formatted.length > 10) {
-        formatted = formatted.slice(0, 10);
-      }
-      // Adaugă spații pentru formatare: 07XX XXX XXX
-      if (formatted.length > 4) {
-        formatted = formatted.slice(0, 4) + " " + formatted.slice(4);
-      }
-      if (formatted.length > 8) {
-        formatted = formatted.slice(0, 8) + " " + formatted.slice(8);
-      }
-      
-      setFormData(prev => ({
-        ...prev,
-        [name]: formatted,
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
 
     // Validează câmpul în timp real dacă a fost deja "touched"
     if (touched[name]) {
@@ -460,7 +435,7 @@ export default function CheckoutPage() {
                     ? "border-rose-400 bg-rose-50/60 focus:border-rose-500"
                     : "border-zinc-200 bg-zinc-50/60 focus:border-emerald-500"
                 }`}
-                placeholder="07XX XXX XXX"
+                placeholder="Număr de telefon"
               />
               {errors.phone && touched.phone && (
                 <span className="mt-1 text-xs text-rose-600">{errors.phone}</span>
