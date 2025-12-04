@@ -13,7 +13,7 @@ export default function SiteFooter() {
         <div className="space-y-3">
           <p className="text-lg font-semibold text-zinc-900 font-[family-name:var(--font-orbitron)] tracking-tight">creatinglayers.ro</p>
           <p className="text-sm text-zinc-500">
-            Magazin online cu produse românești - livrare rapidă și plată ramburs.
+            Magazin online cu produse de calitate printate 3D - livrare rapidă și plată ramburs.
           </p>
         </div>
         <div className="grid flex-1 grid-cols-2 gap-8 text-sm text-zinc-600 sm:grid-cols-3">

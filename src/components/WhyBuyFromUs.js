@@ -8,8 +8,8 @@ const benefits = [
   },
   {
     icon: ShieldCheckIcon,
-    title: "Produse românești",
-    description: "Produse de calitate, realizate în România cu pasiune și atenție la detalii",
+    title: "Produse de calitate printate 3D",
+    description: "Produse de calitate printate 3D, realizate în România cu pasiune și atenție la detalii",
   },
   {
     icon: SparklesIcon,

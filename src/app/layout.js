@@ -26,12 +26,12 @@ const orbitron = Orbitron({
 export const metadata = {
   metadataBase: new URL("https://creatinglayers.ro"),
   title: {
-    default: "Creating Layers | Produse românești",
+    default: "Creating Layers | Produse de calitate printate 3D",
     template: "%s | Creating Layers",
   },
-  description: "Magazin online românesc cu produse de calitate - livrare rapidă și plată ramburs. Produse personalizate disponibile.",
+  description: "Magazin online românesc cu produse de calitate printate 3D - livrare rapidă și plată ramburs. Produse personalizate disponibile.",
   keywords: [
-    "produse românești",
+    "produse de calitate printate 3D",
     "magazin online",
     "livrare gratuită",
     "plata ramburs",
@@ -50,21 +50,21 @@ export const metadata = {
     locale: "ro_RO",
     url: "https://creatinglayers.ro",
     siteName: "Creating Layers",
-    title: "Creating Layers | Produse românești",
-    description: "Magazin online românesc cu produse de calitate - livrare rapidă și plată ramburs.",
+    title: "Creating Layers | Produse de calitate printate 3D",
+    description: "Magazin online românesc cu produse de calitate printate 3D - livrare rapidă și plată ramburs.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Creating Layers - Produse românești",
+        alt: "Creating Layers - Produse de calitate printate 3D",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Creating Layers | Produse românești",
-    description: "Magazin online românesc cu produse de calitate",
+    title: "Creating Layers | Produse de calitate printate 3D",
+    description: "Magazin online românesc cu produse de calitate printate 3D",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -87,7 +87,7 @@ const organizationStructuredData = {
   "name": "Creating Layers",
   "url": "https://creatinglayers.ro",
   "logo": "https://creatinglayers.ro/logo.png",
-  "description": "Magazin online românesc cu produse de calitate - livrare rapidă și plată ramburs",
+  "description": "Magazin online românesc cu produse de calitate printate 3D - livrare rapidă și plată ramburs",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Iași",
@@ -108,7 +108,7 @@ const websiteStructuredData = {
   "@type": "WebSite",
   "name": "Creating Layers",
   "url": "https://creatinglayers.ro",
-  "description": "Magazin online românesc cu produse de calitate",
+  "description": "Magazin online românesc cu produse de calitate printate 3D",
   "publisher": {
     "@type": "Organization",
     "name": "Creating Layers"
